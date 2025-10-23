@@ -29,10 +29,18 @@ python vela_raw_to_c.py ../output/kws_ref_model_aligned_vela.npz --out-dir . --p
 ## Compiling Ethos Driver
 The repo contains contains a pre-built ethos static lib ready for linking into a C project, but if you need to modify something, here is how to compile
 
+For neuralSPOT and Ambiqsuite
 ```bash
 $> rm -rf build
 $> cmake -B build \\n  -DCMAKE_TOOLCHAIN_FILE=./arm-none-eabi-gcc.cmake \\n  -DTARGET_CPU=cortex-m55 \\n  -DETHOSU_TARGET_NPU_CONFIG=ethos-u85-256 \\n  -DCMSIS_PATH=../../clean/neuralSPOT/extern/CMSIS/CMSIS_5-5.9.0\ncmake --build build -j
 ```
+
+For softfp
+```bash
+$> rm -rf build
+$> cmake -B build  -DCMAKE_TOOLCHAIN_FILE=./arm-none-eabi-gcc.cmake  -DTARGET_CPU=cortex-m55+nofp  -DETHOSU_TARGET_NPU_CONFIG=ethos-u85-256  -DCMSIS_PATH=../../clean/neuralSPOT/extern/CMSIS/CMSIS_5-5.9.0 && cmake --build build -j
+```
+
 
 ## Compiling the example
 This example is designed to compile in neuralSPOT, but it should be pretty straightforward to compile into bare metal C.
