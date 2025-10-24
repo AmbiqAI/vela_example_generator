@@ -57,8 +57,8 @@ add_compile_definitions(
 # Link options
 add_link_options(
     -mcpu=${CMAKE_SYSTEM_PROCESSOR}
-    -mthumb
-    --specs=nosys.specs)
+    -mthumb)
+#    --specs=nosys.specs)
 
 # Set floating point unit
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "\\+fp")
