@@ -1,5 +1,9 @@
 # Vela Bare-Metal Example Generator
 This repo contains:
+- a script that converts the raw output provided by Vela into C that directly invokes the Ethos driver
+- A proof-of-concept example output for the MLPerf Tiny KWS model
+- A snapshot of the ethos driver and a customer toolchain file to compile it for Ambiqsuite-compatible binaries
+- A neuralspot-compatible wrapper that gets that compiling
 
 ## Limitations
 - Only single-command-stream models are supported. Any model that requires CPU fallback will fail to convert.

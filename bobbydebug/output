@@ -1,0 +1,1663 @@
+Shadow register parsing is clean...
+BUILD: BUILDCONFIG=nodsp.cfg BUILD_DIR=.build_nodsp
+--------------------------------------------------------------------------------------------------------------------------------------
+BUILD_OPTS = +define+LVM_PRD_SUMMARY_VERBOSITY=UVM_MEDIUM +define+LVM_PRD_DETAIL_VERBOSITY=UVM_HIGH +define+LVM_PRD_FIRMWARE=0 +define+LVM_PRD_RAL_CODE=1 +define+LVM_FIELD_WIDTH=64 +define+UVM_REG_ADDR_WIDTH=32 +define+UVM_REG_DATA_WIDTH=32 +define+AM_SVA_LIB_COMPATIBLE +nowarnCUVIHR -quiet +define+APB_PC +define+UVM_REPORT_DISABLE_FILE_LINE +define+I3C_BUS_EN +define+INITIALIZE_MEMORY +define+RTL_SIM_RUN +define+RD_TYP +define+USE_C_MSG -xmwarn ISOCNER -ALLOWREDEFINITION +define+TESSENT_DISABLE_CLOCK_MONITOR +define+LIB_RTL+G_NOSPECIFY +define+EMTC_EGP001K32_pwr_on_time -xmnote RECOME:FMDEF:TRNNOP:LIBNOU:WARIPR:MAPAOSW:ICFNFF:COVEOS:COVEDC:COVDCL:COVUTA:COVMDD:COVFND:COVFHT:COVNOEN:COVSEC:COVDNC -disable_indirect_prune -f tb_files_gates_nodft.f -tfile gates.tfile -DEFINE CPF +define+UVM_END
+
+SIM_OPTS = +analog_extracted_model +random_burst_hfrc +AMBIQ_INFO_ALLOW_BURST=1 +ahbp_passive -unbuffered -MESSAGES -status -LICQUEUE -NBASYNC +SHADOW_MEM_FILE=./shadow.mem -seed 1 +SEED=1 -nowarn DSEMEL:DSEM2009 +USER_CONTROLLED_PLLTS22ULPHVLPFRACA_LOCK_TIME=200 +UVM_TIMEOUT=200000000 +UVM_MAX_QUIT_COUNT=500 +UVM_VERBOSITY=UVM_NONE -disable_indirect_prune -input /project_carrera/carrera/work/bliu/CAR_3/digital/tb/mcu_top/input.tcl +UVM_TESTNAME=top_null_test -xmlibdirname /project_carrera/carrera/work/bliu/CAR_3/digital/tb/mcu_top/.build_nodsp/xcelium.d
+--------------------------------------------------------------------------------------------------------------------------------------
+
+CAUTION  TIMING IS DISABLED DURING INITIAL make build
+  BUILD_OPTS += -notimingchecks
+    SIM_OPTS += -notimingchecks
+######################################################################
+# Compile / Link the C testcase
+######################################################################
+cd /project_carrera/carrera/work/bliu/CAR_3/digital/validation/npu ; until mkdir /project_carrera/carrera/work/bliu/CAR_3/digital/validation//.build_lock; do echo "make: Waiting for test build lock..."; sleep 1; done; make clean; /opt/lsf/9.1/linux2.6-glibc2.3-x86_64/bin/bsub -I -R "rusage[mem=10]" -q compile_el8 make -s hello_world1 DSP=0 RSS=1 RSS_TESTNAME=default_hello_world RSS_TESTDIR=tests RSS_OFFSET=0x1F0000 CC_OPTS+="  " TOOLCHAIN=0; if [ $? -ne 0 ]; then echo "TEST COMPILE ERROR!  Removing ../.build_lock."; rm -rf /project_carrera/carrera/work/bliu/CAR_3/digital/validation//.build_lock; exit 2; fi
+make[1]: Entering directory '/project_carrera/carrera/work/bliu/CAR_3/digital/validation/npu'
+make[1]: Leaving directory '/project_carrera/carrera/work/bliu/CAR_3/digital/validation/npu'
+Job <434394> is submitted to queue <compile_el8>.
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from hello_world1.c:12:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from hello_world1.c:12:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from hello_world1.c:12:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from hello_world1.c:12:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from hello_world1.c:12:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from hello_world1.c:12:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from ../common/MCU/boot_mcu.c:36:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from ../common/MCU/boot_mcu.c:36:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../common/MCU/boot_mcu.c:36:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../common/MCU/boot_mcu.c:36:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../common/MCU/boot_mcu.c:36:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../common/MCU/boot_mcu.c:36:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from ../common/MCU/mcuinit_opts.c:4:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from ../common/MCU/mcuinit_opts.c:4:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../common/MCU/mcuinit_opts.c:4:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../common/MCU/mcuinit_opts.c:4:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../common/MCU/mcuinit_opts.c:4:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../common/MCU/mcuinit_opts.c:4:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from ../common/MCU/system_mcu.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from ../common/MCU/system_mcu.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../common/MCU/system_mcu.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../common/MCU/system_mcu.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../common/MCU/system_mcu.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../common/MCU/system_mcu.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from ../common/retarget_mcu.c:35:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from ../common/retarget_mcu.c:35:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../common/retarget_mcu.c:35:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../common/retarget_mcu.c:35:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../common/retarget_mcu.c:35:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../common/retarget_mcu.c:35:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from ../ctimer/ctimer_patlib.c:20:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from ../ctimer/ctimer_patlib.c:20:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../ctimer/ctimer_patlib.c:20:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../ctimer/ctimer_patlib.c:20:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../ctimer/ctimer_patlib.c:20:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../ctimer/ctimer_patlib.c:20:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/iom_lib.h:34,
+                 from ../iom/iom_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/iom_lib.h:34,
+                 from ../iom/iom_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/iom_lib.h:34,
+                 from ../iom/iom_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/iom_lib.h:34,
+                 from ../iom/iom_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/iom_lib.h:34,
+                 from ../iom/iom_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/iom_lib.h:34,
+                 from ../iom/iom_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/i2s_lib.h:11,
+                 from ../i2s/i2s_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/i2s_lib.h:11,
+                 from ../i2s/i2s_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/i2s_lib.h:11,
+                 from ../i2s/i2s_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/i2s_lib.h:11,
+                 from ../i2s/i2s_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/i2s_lib.h:11,
+                 from ../i2s/i2s_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/i2s_lib.h:11,
+                 from ../i2s/i2s_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from ../common/MCU/ioslave_cmds.c:20:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from ../common/MCU/ioslave_cmds.c:20:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../common/MCU/ioslave_cmds.c:20:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../common/MCU/ioslave_cmds.c:20:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../common/MCU/ioslave_cmds.c:20:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../common/MCU/ioslave_cmds.c:20:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+Makefile:78: warning: overriding recipe for target 'clean'
+../Makefile:919: warning: ignoring old recipe for target 'clean'
+--------- 1
+ Compiling  val_lib/rss_pinlib.c
+ Compiling  val_lib/keys.c
+ Compiling  val_lib/pnm_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/lm_lib.h:27,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/pnm_lib.h:30,
+                 from val_lib/pnm_lib.c:29:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/lm_lib.h:27,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/pnm_lib.h:30,
+                 from val_lib/pnm_lib.c:29:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/lm_lib.h:27,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/pnm_lib.h:30,
+                 from val_lib/pnm_lib.c:29:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/lm_lib.h:27,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/pnm_lib.h:30,
+                 from val_lib/pnm_lib.c:29:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/lm_lib.h:27,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/pnm_lib.h:30,
+                 from val_lib/pnm_lib.c:29:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/lm_lib.h:27,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/pnm_lib.h:30,
+                 from val_lib/pnm_lib.c:29:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/dc_pinlib.c
+ Compiling  val_lib/pdm_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/pdm_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/pdm_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/pdm_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/pdm_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/pdm_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/pdm_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/adc_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/adc_lib.c:27:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/adc_lib.c:27:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/adc_lib.c:27:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/adc_lib.c:27:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/adc_lib.c:27:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/adc_lib.c:27:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+val_lib/adc_lib.c: In function 'adc_multi_reset_switch':
+val_lib/adc_lib.c:621:10: warning: 'rstcnt' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  621 |   return rstcnt;
+      |          ^~~~~~
+val_lib/adc_lib.c: In function 'determine_expected_adc_intrstat':
+val_lib/adc_lib.c:866:10: warning: 'expected_adc_intrstat' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  866 |   return expected_adc_intrstat;
+      |          ^~~~~~~~~~~~~~~~~~~~~
+ Compiling  val_lib/rss_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/rss_lib.c:3:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/rss_lib.c:3:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/rss_lib.c:3:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/rss_lib.c:3:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/rss_lib.c:3:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/rss_lib.c:3:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/gpio_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/gpio_lib.c:30:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/gpio_lib.c:30:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/gpio_lib.c:30:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/gpio_lib.c:30:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/gpio_lib.c:30:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/gpio_lib.c:30:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/power_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/power_lib.h:28,
+                 from val_lib/power_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/power_lib.h:28,
+                 from val_lib/power_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/power_lib.h:28,
+                 from val_lib/power_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/power_lib.h:28,
+                 from val_lib/power_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/power_lib.h:28,
+                 from val_lib/power_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/power_lib.h:28,
+                 from val_lib/power_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+val_lib/power_lib.c: In function 'randvalDevEn':
+val_lib/power_lib.c:819:11: warning: 'device_en_reg' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  819 |     return(device_en_reg);
+      |           ^
+ Compiling  val_lib/secure_timer_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/secure_timer_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/secure_timer_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/secure_timer_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/secure_timer_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/secure_timer_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/secure_timer_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/uart_pinlib.c
+ Compiling  val_lib/val_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/val_lib.c:30:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/val_lib.c:30:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/val_lib.c:30:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/val_lib.c:30:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/val_lib.c:30:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/val_lib.c:30:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+val_lib/val_lib.c: In function 'vl_SysTick_wait_us':
+val_lib/val_lib.c:685:12: warning: 'ticks' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  685 |     return ticks;
+      |            ^~~~~
+val_lib/val_lib.c: In function 'vl_CheckSleepStateVR':
+val_lib/val_lib.c:1200:19: warning: 'expected_data' may be used uninitialized in this function [-Wmaybe-uninitialized]
+ 1200 |     expected_data |=  additionalBits;
+      |     ~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+val_lib/val_lib.c: In function 'vl_CheckSleepStateMISC':
+val_lib/val_lib.c:1267:22: warning: 'expected_data' may be used uninitialized in this function [-Wmaybe-uninitialized]
+ 1267 |     expected_data    |=  additionalBits;   // These bits are expected to be zero (from the normal value)
+      |     ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+ Compiling  val_lib/audadc_lib.c
+ Compiling  val_lib/gpu_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/gpu_lib.c:6:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/gpu_lib.c:6:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/gpu_lib.c:6:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/gpu_lib.c:6:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/gpu_lib.c:6:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/gpu_lib.c:6:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling ctimer_lib
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/ctimer_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/ctimer_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/ctimer_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/ctimer_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/ctimer_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/ctimer_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/clkgen_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/clkgen_lib.c:8:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/clkgen_lib.c:8:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/clkgen_lib.c:8:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/clkgen_lib.c:8:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/clkgen_lib.c:8:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/clkgen_lib.c:8:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/iom_pinlib.c
+ Compiling  val_lib/dc_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/uart_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/uart_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/uart_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/uart_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/uart_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/uart_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/uart_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/secure_ctimer_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/secure_ctimer_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/secure_ctimer_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/secure_ctimer_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/secure_ctimer_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/secure_ctimer_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/secure_ctimer_lib.c:32:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling mspi_lib
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/mspi_lib.c:18:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/mspi_lib.c:18:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/mspi_lib.c:18:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/mspi_lib.c:18:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/mspi_lib.c:18:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/mspi_lib.c:18:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/flash_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/flash_lib.h:35,
+                 from val_lib/flash_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/flash_lib.h:35,
+                 from val_lib/flash_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/flash_lib.h:35,
+                 from val_lib/flash_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/flash_lib.h:35,
+                 from val_lib/flash_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/flash_lib.h:35,
+                 from val_lib/flash_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/flash_lib.h:35,
+                 from val_lib/flash_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/gpio_pinlib.c
+ Compiling  val_lib/mcu_ctrl_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/mcu_ctrl_lib.c:12:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/mcu_ctrl_lib.c:12:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/mcu_ctrl_lib.c:12:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/mcu_ctrl_lib.c:12:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/mcu_ctrl_lib.c:12:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/mcu_ctrl_lib.c:12:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/lm_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/lm_lib.h:27,
+                 from val_lib/lm_lib.c:13:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/lm_lib.h:27,
+                 from val_lib/lm_lib.c:13:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/lm_lib.h:27,
+                 from val_lib/lm_lib.c:13:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/lm_lib.h:27,
+                 from val_lib/lm_lib.c:13:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/lm_lib.h:27,
+                 from val_lib/lm_lib.c:13:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/lm_lib.h:27,
+                 from val_lib/lm_lib.c:13:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/rtc_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/rtc_lib.h:1,
+                 from val_lib/rtc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/rtc_lib.h:1,
+                 from val_lib/rtc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/rtc_lib.h:1,
+                 from val_lib/rtc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/rtc_lib.h:1,
+                 from val_lib/rtc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/rtc_lib.h:1,
+                 from val_lib/rtc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/rtc_lib.h:1,
+                 from val_lib/rtc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/mspi_pinlib.c
+ Compiling  val_lib/dsp_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dsp_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dsp_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dsp_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dsp_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dsp_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dsp_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/secure_rtc_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/secure_rtc_lib.h:1,
+                 from val_lib/secure_rtc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/secure_rtc_lib.h:1,
+                 from val_lib/secure_rtc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/secure_rtc_lib.h:1,
+                 from val_lib/secure_rtc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/secure_rtc_lib.h:1,
+                 from val_lib/secure_rtc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/secure_rtc_lib.h:1,
+                 from val_lib/secure_rtc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/secure_rtc_lib.h:1,
+                 from val_lib/secure_rtc_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/sdio_pinlib.c
+ Compiling  val_lib/timer_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/timer_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/timer_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/timer_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/timer_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/timer_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/timer_lib.c:33:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+val_lib/timer_lib.c: In function 'timer_read':
+val_lib/timer_lib.c:343:12: warning: 'retval' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  343 |     return retval;
+      |            ^~~~~~
+val_lib/timer_lib.c: In function 'timer_limit_read':
+val_lib/timer_lib.c:374:12: warning: 'retval' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  374 |     return retval;
+      |            ^~~~~~
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/gpio_lib.h:34,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:38,
+                 from val_lib/timer_lib.c:36:
+val_lib/timer_lib.c: In function 'timer_double_read':
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCUTests.h:136:24: warning: 'retval2' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  136 |     #define MSG(arg) { am_util_stdio_printf arg ; }
+      |                        ^~~~~~~~~~~~~~~~~~~~
+val_lib/timer_lib.c:380:21: note: 'retval2' was declared here
+  380 |   uint32_t retval1, retval2;
+      |                     ^~~~~~~
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/gpio_lib.h:34,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:38,
+                 from val_lib/timer_lib.c:36:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCUTests.h:136:24: warning: 'retval1' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  136 |     #define MSG(arg) { am_util_stdio_printf arg ; }
+      |                        ^~~~~~~~~~~~~~~~~~~~
+val_lib/timer_lib.c:380:12: note: 'retval1' was declared here
+  380 |   uint32_t retval1, retval2;
+      |            ^~~~~~~
+val_lib/timer_lib.c: In function 'timer_ctrl_write':
+val_lib/timer_lib.c:891:24: warning: 'read_val' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  891 |     write_val |= (mask & read_val);
+      |                  ~~~~~~^~~~~~~~~~~
+ Compiling  val_lib/profiling_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/profiling_lib.c:5:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/profiling_lib.c:5:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/profiling_lib.c:5:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/profiling_lib.c:5:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/profiling_lib.c:5:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/profiling_lib.c:5:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/sdio_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/sdio_lib.c:18:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/sdio_lib.c:18:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/sdio_lib.c:18:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/sdio_lib.c:18:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/sdio_lib.c:18:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/sdio_lib.c:18:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+val_lib/sdio_lib.c: In function 'SDIO_standby_in_deepersleep':
+val_lib/sdio_lib.c:1583:5: warning: implicit declaration of function 'wakeup_timer' [-Wimplicit-function-declaration]
+ 1583 |     wakeup_timer(1);
+      |     ^~~~~~~~~~~~
+ Compiling  val_lib/trig_pinlib.c
+ Compiling  val_lib/dispphy_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dispphy_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dispphy_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dispphy_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dispphy_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dispphy_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/dispphy_lib.c:2:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+val_lib/dispphy_lib.c: In function 'power_up_dispphy':
+val_lib/dispphy_lib.c:12:3: warning: implicit declaration of function 'dispphy_set_trim' [-Wimplicit-function-declaration]
+   12 |   dispphy_set_trim();
+      |   ^~~~~~~~~~~~~~~~
+val_lib/dispphy_lib.c: At top level:
+val_lib/dispphy_lib.c:28:6: warning: conflicting types for 'dispphy_set_trim'
+   28 | void dispphy_set_trim() {
+      |      ^~~~~~~~~~~~~~~~
+val_lib/dispphy_lib.c:12:3: note: previous implicit declaration of 'dispphy_set_trim' was here
+   12 |   dispphy_set_trim();
+      |   ^~~~~~~~~~~~~~~~
+val_lib/dispphy_lib.c: In function 'dispphy_config_rclk':
+val_lib/dispphy_lib.c:92:5: warning: implicit declaration of function 'dc_config_pll' [-Wimplicit-function-declaration]
+   92 |     dc_config_pll(0, 5, 5);  //int refdiv, int fbdiv, int postdiv
+      |     ^~~~~~~~~~~~~
+ Compiling  val_lib/misc_clk_pinlib.c
+ Compiling  val_lib/usb_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/usb_lib.c:1:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/usb_lib.c:1:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/usb_lib.c:1:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/usb_lib.c:1:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/usb_lib.c:1:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/usb_lib.c:1:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/dme_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/dme_lib.c:29:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/dme_lib.c:29:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/dme_lib.c:29:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/dme_lib.c:29:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/dme_lib.c:29:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/val_lib.h:37,
+                 from val_lib/dme_lib.c:29:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/mmu_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/mmu_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/mmu_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/mmu_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/mmu_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/mmu_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/mmu_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/i3c_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/i3c_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/i3c_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/i3c_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/i3c_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/i3c_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/i3c_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+val_lib/i3c_lib.c: In function 'pio_data_port_write_ccc':
+val_lib/i3c_lib.c:3531:19: warning: 'pio_data' may be used uninitialized in this function [-Wmaybe-uninitialized]
+ 3531 |          pio_data |= dev_ctrl_bytes[devctrl_wr_ptr0+3] << 24;
+      |          ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from val_lib/i3c_lib.c:28:
+val_lib/i3c_lib.c: In function 'cmd_ring_ser':
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCUTests.h:136:24: warning: 'brd_addr_enb_disb' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  136 |     #define MSG(arg) { am_util_stdio_printf arg ; }
+      |                        ^~~~~~~~~~~~~~~~~~~~
+val_lib/i3c_lib.c:4960:10: note: 'brd_addr_enb_disb' was declared here
+ 4960 |     bool brd_addr_enb_disb;
+      |          ^~~~~~~~~~~~~~~~~
+In file included from val_lib/i3c_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCUTests.h:136:24: warning: 'dat_index' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  136 |     #define MSG(arg) { am_util_stdio_printf arg ; }
+      |                        ^~~~~~~~~~~~~~~~~~~~
+val_lib/i3c_lib.c:4962:13: note: 'dat_index' was declared here
+ 4962 |     uint8_t dat_index;
+      |             ^~~~~~~~~
+In file included from val_lib/i3c_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCUTests.h:136:24: warning: 'data_entry_op_type' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  136 |     #define MSG(arg) { am_util_stdio_printf arg ; }
+      |                        ^~~~~~~~~~~~~~~~~~~~
+val_lib/i3c_lib.c:4959:13: note: 'data_entry_op_type' was declared here
+ 4959 |     uint8_t data_entry_op_type;
+      |             ^~~~~~~~~~~~~~~~~~
+In file included from val_lib/i3c_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCUTests.h:136:24: warning: 'reset_op_type' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  136 |     #define MSG(arg) { am_util_stdio_printf arg ; }
+      |                        ^~~~~~~~~~~~~~~~~~~~
+val_lib/i3c_lib.c:4958:13: note: 'reset_op_type' was declared here
+ 4958 |     uint8_t reset_op_type;
+      |             ^~~~~~~~~~~~~
+In file included from val_lib/i3c_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCUTests.h:136:24: warning: 'scl_speed' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  136 |     #define MSG(arg) { am_util_stdio_printf arg ; }
+      |                        ^~~~~~~~~~~~~~~~~~~~
+val_lib/i3c_lib.c:4963:13: note: 'scl_speed' was declared here
+ 4963 |     uint8_t scl_speed;
+      |             ^~~~~~~~~
+In file included from val_lib/i3c_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCUTests.h:136:24: warning: 'rst_procedure' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  136 |     #define MSG(arg) { am_util_stdio_printf arg ; }
+      |                        ^~~~~~~~~~~~~~~~~~~~
+val_lib/i3c_lib.c:4964:13: note: 'rst_procedure' was declared here
+ 4964 |     uint8_t rst_procedure;
+      |             ^~~~~~~~~~~~~
+In file included from val_lib/i3c_lib.c:28:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCUTests.h:136:24: warning: 'ring_bundle_lock' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  136 |     #define MSG(arg) { am_util_stdio_printf arg ; }
+      |                        ^~~~~~~~~~~~~~~~~~~~
+val_lib/i3c_lib.c:4961:10: note: 'ring_bundle_lock' was declared here
+ 4961 |     bool ring_bundle_lock;
+      |          ^~~~~~~~~~~~~~~~
+val_lib/i3c_lib.c: In function 'ccc_transfer':
+val_lib/i3c_lib.c:2291:7: warning: 'grp_addrs60' may be used uninitialized in this function [-Wmaybe-uninitialized]
+ 2291 |  while(grp_addrs60){
+      |       ^
+val_lib/i3c_lib.c: In function 'scb_data_pack':
+val_lib/i3c_lib.c:6214:36: warning: 'data' may be used uninitialized in this function [-Wmaybe-uninitialized]
+ 6214 |        i3c_wr_comp_data_hdr[wrptr] = data & 0xFFFF;
+      |        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+ Compiling  val_lib/ethosu85nummacs256a_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/ethosu85nummacs256a_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/ethosu85nummacs256a_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/ethosu85nummacs256a_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/ethosu85nummacs256a_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/ethosu85nummacs256a_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/ethosu85nummacs256a_lib.c:26:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+val_lib/ethosu85nummacs256a_lib.c: In function 'npu_initial':
+val_lib/ethosu85nummacs256a_lib.c:42:5: warning: implicit declaration of function 'power_up_mmu'; did you mean 'power_up_npu'? [-Wimplicit-function-declaration]
+   42 |     power_up_mmu();
+      |     ^~~~~~~~~~~~
+      |     power_up_npu
+ Compiling  val_lib/reset_lib.c
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/reset_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/reset_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/reset_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/reset_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/reset_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/val_lib/reset_lib.h:32,
+                 from val_lib/reset_lib.c:31:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/i2s_pinlib.c
+ Compiling MCUTests
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from val_lib/MCUTests.c:41:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from val_lib/MCUTests.c:41:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/MCUTests.c:41:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/MCUTests.c:41:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from val_lib/MCUTests.c:41:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from val_lib/MCUTests.c:41:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+ Compiling  val_lib/pdm_pinlib.c
+ Library  bin-gcc/val_lib.a
+a - bin-gcc/rss_pinlib.o
+a - bin-gcc/keys.o
+a - bin-gcc/pnm_lib.o
+a - bin-gcc/dc_pinlib.o
+a - bin-gcc/pdm_lib.o
+a - bin-gcc/adc_lib.o
+a - bin-gcc/rss_lib.o
+a - bin-gcc/gpio_lib.o
+a - bin-gcc/power_lib.o
+a - bin-gcc/secure_timer_lib.o
+a - bin-gcc/uart_pinlib.o
+a - bin-gcc/val_lib.o
+a - bin-gcc/audadc_lib.o
+a - bin-gcc/gpu_lib.o
+a - bin-gcc/ctimer_lib.o
+a - bin-gcc/clkgen_lib.o
+a - bin-gcc/iom_pinlib.o
+a - bin-gcc/dc_lib.o
+a - bin-gcc/uart_lib.o
+a - bin-gcc/secure_ctimer_lib.o
+a - bin-gcc/mspi_lib.o
+a - bin-gcc/flash_lib.o
+a - bin-gcc/gpio_pinlib.o
+a - bin-gcc/mcu_ctrl_lib.o
+a - bin-gcc/lm_lib.o
+a - bin-gcc/rtc_lib.o
+a - bin-gcc/mspi_pinlib.o
+a - bin-gcc/dsp_lib.o
+a - bin-gcc/secure_rtc_lib.o
+a - bin-gcc/sdio_pinlib.o
+a - bin-gcc/timer_lib.o
+a - bin-gcc/profiling_lib.o
+a - bin-gcc/sdio_lib.o
+a - bin-gcc/trig_pinlib.o
+a - bin-gcc/dispphy_lib.o
+a - bin-gcc/misc_clk_pinlib.o
+a - bin-gcc/usb_lib.o
+a - bin-gcc/dme_lib.o
+a - bin-gcc/mmu_lib.o
+a - bin-gcc/i3c_lib.o
+a - bin-gcc/ethosu85nummacs256a_lib.o
+a - bin-gcc/reset_lib.o
+a - bin-gcc/i2s_pinlib.o
+a - bin-gcc/MCUTests.o
+a - bin-gcc/pdm_pinlib.o
+Made all.
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:318,
+                 from ../common/MCU/startup_gcc.c:17:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_exti2s_ip.h:25: warning: "AM_REG_EXTI2Sn" redefined
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:316,
+                 from ../common/MCU/startup_gcc.c:17:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_exti2s.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_EXTI2Sn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../common/MCU/startup_gcc.c:17:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:24: warning: "AM_REG_I2SNOASRC_NUM_MODULES" redefined
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES              1
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../common/MCU/startup_gcc.c:17:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:24: note: this is the location of the previous definition
+   24 | #define AM_REG_I2SNOASRC_NUM_MODULES                 3
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:322,
+                 from ../common/MCU/startup_gcc.c:17:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/am_reg_i2s_no_asrc_ip.h:25: warning: "AM_REG_I2SNOASRCn" redefined
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+In file included from /project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/MCU/mcu.h:319,
+                 from ../common/MCU/startup_gcc.c:17:
+/project_carrera/carrera/work/bliu/CAR_3/digital/validation/include/am_reg/am_reg_i2s_no_asrc.h:25: note: this is the location of the previous definition
+   25 | #define AM_REG_I2SNOASRCn(n) \
+      | 
+OTHER_OBJS=./tiny_kws/foo_buffers.o ../keys.o /project_carrera/carrera/share/sw/ethos_u_core_driver/lib/libethosu_core_driver.a MCUOBJS=boot_mcu.o mcuinit_opts.o am_hal_interrupt.o system_mcu.o retarget_mcu.o ctimer_patlib.o iom_lib.o i2s_lib.o ioslave_cmds.o /project_carrera/carrera/share/sw/tflm/lib/tflite-m55.a /project_carrera/carrera/work/bliu/CAR_3/digital/validation/common//bin-gcc/val_lib.a /project_carrera/carrera/share/sw/CMSIS_CM55/DSP/Source/builddir/libCMSISDSP_GNU.a startup_gcc.o /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libm.a /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc.a /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/libgcc.a
+/project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld: /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc.a(lib_a-sbrkr.o): in function `_sbrk_r':
+sbrkr.c:(.text._sbrk_r+0xc): undefined reference to `_sbrk'
+/project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld: /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc.a(lib_a-writer.o): in function `_write_r':
+writer.c:(.text._write_r+0x14): undefined reference to `_write'
+/project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld: /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc.a(lib_a-closer.o): in function `_close_r':
+closer.c:(.text._close_r+0xc): undefined reference to `_close'
+/project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld: /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc.a(lib_a-fstatr.o): in function `_fstat_r':
+fstatr.c:(.text._fstat_r+0x12): undefined reference to `_fstat'
+/project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld: /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc.a(lib_a-isattyr.o): in function `_isatty_r':
+isattyr.c:(.text._isatty_r+0xc): undefined reference to `_isatty'
+/project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld: /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc.a(lib_a-lseekr.o): in function `_lseek_r':
+lseekr.c:(.text._lseek_r+0x14): undefined reference to `_lseek'
+/project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld: /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc.a(lib_a-readr.o): in function `_read_r':
+readr.c:(.text._read_r+0x14): undefined reference to `_read'
+/project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld: /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc.a(lib_a-abort.o): in function `abort':
+abort.c:(.text.abort+0xa): undefined reference to `_exit'
+/project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld: /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc.a(lib_a-signalr.o): in function `_kill_r':
+signalr.c:(.text._kill_r+0x12): undefined reference to `_kill'
+/project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld: /project_carrera/carrera/share/sw/gcc/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc.a(lib_a-signalr.o): in function `_getpid_r':
+signalr.c:(.text._getpid_r+0x0): undefined reference to `_getpid'
+make[1]: *** [../Makefile:748: hello_world1.mcu.elf] Error 1
+TEST COMPILE ERROR!  Removing ../.build_lock.
