@@ -42,15 +42,12 @@
 
 // Logs enabled by default
 #ifndef ETHOSU_LOG_ENABLE
-#define ETHOSU_LOG_ENABLE 1
+#define ETHOSU_LOG_ENABLE 0
 #endif
 
-#define LOG_COMMON_NOP(s, f, ...)                                                                                      \
-    if (0)                                                                                                             \
-    (void)fprintf(s, "%s" f, "", ##__VA_ARGS__)
-
+#define LOG_COMMON_NOP(s, f, ...) 
 #if ETHOSU_LOG_ENABLE
-#define LOG_COMMON(s, f, ...) (void)fprintf(s, f, ##__VA_ARGS__)
+#define LOG_COMMON(s, f, ...) 
 #else
 #define LOG_COMMON(s, f, ...) LOG_COMMON_NOP(s, f, ##__VA_ARGS__)
 #endif

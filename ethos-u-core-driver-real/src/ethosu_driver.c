@@ -38,8 +38,8 @@
 #include <inttypes.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
+// #include <stdio.h>
+// #include <stdlib.h>
 
 /******************************************************************************
  * Defines
@@ -55,6 +55,60 @@
 
 #define SCRATCH_BASE_ADDR_INDEX 1
 #define FAST_MEMORY_BASE_ADDR_INDEX 2
+
+// Ambiq Code
+// Replace the weak semaphore implementations with a static pool version
+
+struct ethosu_semaphore_t { volatile uint8_t count; };
+
+#define ETHOSU_MAX_SEMAPHORES 10
+static struct ethosu_semaphore_t sem_pool[ETHOSU_MAX_SEMAPHORES];
+static uint8_t sem_in_use[ETHOSU_MAX_SEMAPHORES];
+
+void *ethosu_semaphore_create(void)
+{
+    for (unsigned i = 0; i < ETHOSU_MAX_SEMAPHORES; ++i) {
+        if (!sem_in_use[i]) {
+            sem_in_use[i] = 1;
+            sem_pool[i].count = 0;
+            return &sem_pool[i];
+        }
+    }
+    return NULL; // caller already checks for NULL
+}
+
+void ethosu_semaphore_destroy(void *sem)
+{
+    if (!sem) return;
+    for (unsigned i = 0; i < ETHOSU_MAX_SEMAPHORES; ++i) {
+        if (&sem_pool[i] == sem) {
+            sem_in_use[i] = 0;
+            sem_pool[i].count = 0;
+            return;
+        }
+    }
+}
+
+int ethosu_semaphore_take(void *sem, uint64_t timeout)
+{
+    (void)timeout;  // keep signature; implement if you need timeouts
+    struct ethosu_semaphore_t *s = (struct ethosu_semaphore_t *)sem;
+    while (s->count == 0) {
+        __WFE();
+    }
+    s->count--;
+    return 0;
+}
+
+int ethosu_semaphore_give(void *sem)
+{
+    struct ethosu_semaphore_t *s = (struct ethosu_semaphore_t *)sem;
+    s->count++;
+    __SEV();
+    return 0;
+}
+// End of Ambiq Code
+
 
 /******************************************************************************
  * Types
@@ -183,10 +237,10 @@ ethosu_invalidate_dcache(const uint64_t *base_addr, const size_t *base_addr_size
  * definitions and implement true thread-safety (in application layer).
  ******************************************************************************/
 
-struct ethosu_semaphore_t
-{
-    uint8_t count;
-};
+// struct ethosu_semaphore_t
+// {
+//     uint8_t count;
+// };
 
 static void *ethosu_mutex;
 static void *ethosu_semaphore;
@@ -214,51 +268,55 @@ int __attribute__((weak)) ethosu_mutex_unlock(void *mutex)
     return 0;
 }
 
-// Baremetal implementation of creating a semaphore
-void *__attribute__((weak)) ethosu_semaphore_create(void)
-{
-    struct ethosu_semaphore_t *sem = malloc(sizeof(*sem));
-    if (sem != NULL)
-    {
-        sem->count = 0;
-    }
-    return sem;
-}
+// // Baremetal implementation of creating a semaphore
+// void *__attribute__((weak)) ethosu_semaphore_create(void)
+// {
+//     struct ethosu_semaphore_t *sem = malloc(sizeof(*sem));
+//     if (sem != NULL)
+//     {
+//         sem->count = 0;
+//     }
+//     return sem;
+// }
 
-void __attribute__((weak)) ethosu_semaphore_destroy(void *sem)
-{
-    free((struct ethosu_semaphore_t *)sem);
-}
+// void __attribute__((weak)) ethosu_semaphore_destroy(void *sem)
+// {
+//     free((struct ethosu_semaphore_t *)sem);
+// }
+
+// +// static pool, no malloc/free
+// void *__attribute__((weak)) ethosu_semaphore_create(void) { /* impl from pool as above */ }
+// void __attribute__((weak)) ethosu_semaphore_destroy(void *sem) { /* mark free in pool */ }
 
 // Baremetal simulation of waiting/sleeping for and then taking a semaphore using intrisics
-int __attribute__((weak)) ethosu_semaphore_take(void *sem, uint64_t timeout)
-{
-    UNUSED(timeout);
-    // Baremetal pseudo-example on how to trigger a timeout:
-    // if (timeout != ETHOSU_SEMAPHORE_WAIT_FOREVER) {
-    //     setup_a_timer_to_call_SEV_after_time(timeout);
-    // }
-    struct ethosu_semaphore_t *s = sem;
-    while (s->count == 0)
-    {
-        __WFE();
-        // Baremetal pseudo-example check if timeout triggered:
-        // if (SEV_timer_triggered()) {
-        //     return -1;
-        // }
-    }
-    s->count--;
-    return 0;
-}
+// int __attribute__((weak)) ethosu_semaphore_take(void *sem, uint64_t timeout)
+// {
+//     UNUSED(timeout);
+//     // Baremetal pseudo-example on how to trigger a timeout:
+//     // if (timeout != ETHOSU_SEMAPHORE_WAIT_FOREVER) {
+//     //     setup_a_timer_to_call_SEV_after_time(timeout);
+//     // }
+//     struct ethosu_semaphore_t *s = sem;
+//     while (s->count == 0)
+//     {
+//         __WFE();
+//         // Baremetal pseudo-example check if timeout triggered:
+//         // if (SEV_timer_triggered()) {
+//         //     return -1;
+//         // }
+//     }
+//     s->count--;
+//     return 0;
+// }
 
-// Baremetal simulation of giving a semaphore and waking up processes using intrinsics
-int __attribute__((weak)) ethosu_semaphore_give(void *sem)
-{
-    struct ethosu_semaphore_t *s = sem;
-    s->count++;
-    __SEV();
-    return 0;
-}
+// // Baremetal simulation of giving a semaphore and waking up processes using intrinsics
+// int __attribute__((weak)) ethosu_semaphore_give(void *sem)
+// {
+//     struct ethosu_semaphore_t *s = sem;
+//     s->count++;
+//     __SEV();
+//     return 0;
+// }
 
 /******************************************************************************
  * Weak functions - Inference begin/end callbacks
