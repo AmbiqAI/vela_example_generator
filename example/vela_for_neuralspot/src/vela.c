@@ -9,7 +9,7 @@
 // Provide your platform's NPU register base here.
 extern void *ethosu_get_regs_base(void);
 void *ethosu_get_regs_base(void) {
-    return 0;
+    return (void *)0x4003C000;	// AT110 NPU Base address
 }
 int foo_invoke(void) {
     uint64_t base_addr[ETHOSU_MAX_REGIONS] = {0};
