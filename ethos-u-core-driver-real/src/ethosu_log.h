@@ -45,11 +45,26 @@
 #define ETHOSU_LOG_ENABLE 0
 #endif
 
-#define LOG_COMMON_NOP(s, f, ...) 
+extern uint32_t am_util_stdio_printf(const char *pcFmt, ...);
+
+#ifndef NOMSGS
+#if ARM_TOOLCHAIN == 1
+    #define MSG(s, ...) { am_util_stdio_printf(s, ##__VA_ARGS__ ) ; }
+#else // GNU toolchain
+    #ifndef ARMBAR
+      #define MSG(s, ...) { am_util_stdio_printf(s, ##__VA_ARGS__ ); }
+    #else
+      #define MSG(s, ...) { am_util_stdio_printf(s, ##__VA_ARGS__ ); }
+    #endif
+#endif
+#endif
+
+
+#define LOG_COMMON_NOP(s, ...) 
 #if ETHOSU_LOG_ENABLE
-#define LOG_COMMON(s, f, ...) 
+#define LOG_COMMON(s, f, ...) MSG(f, ##__VA_ARGS__)
 #else
-#define LOG_COMMON(s, f, ...) LOG_COMMON_NOP(s, f, ##__VA_ARGS__)
+#define LOG_COMMON(s, f, ...) LOG_COMMON_NOP(f, ##__VA_ARGS__)
 #endif
 
 // Log formatting
