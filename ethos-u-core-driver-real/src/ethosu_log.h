@@ -37,7 +37,7 @@
 
 // Define default log severity
 #ifndef ETHOSU_LOG_SEVERITY
-#define ETHOSU_LOG_SEVERITY ETHOSU_LOG_WARN
+#define ETHOSU_LOG_SEVERITY ETHOSU_LOG_DEBUG
 #endif
 
 // Logs enabled by default
