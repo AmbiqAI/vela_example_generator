@@ -1,0 +1,1 @@
+cmake -B build -DCMAKE_TOOLCHAIN_FILE=./arm-none-eabi-gcc.cmake122 -DTARGET_CPU=cortex-m55+nofp -DETHOSU_TARGET_NPU_CONFIG=ethos-u85-256 -DCMSIS_PATH=/project_carrera/carrera/share/sw/CMSIS_CM55/ && cmake --build build -j
