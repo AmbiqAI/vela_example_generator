@@ -420,6 +420,8 @@ static int handle_command_stream(struct ethosu_driver *drv, const uint8_t *cmd_s
             LOG_ERR("Base addr %d: 0x%" PRIx64 "not aligned to 16 bytes", i, drv->job.base_addr[i]);
             return -1;
         }
+        LOG_INFO("Base addr %d: 0x%x", i, drv->job.base_addr[i]);
+        LOG_INFO("Base size %d: %d", i, drv->job.base_addr_size[i]);
     }
 
     // Flush/clean the data cache
@@ -614,7 +616,11 @@ int ethosu_wait(struct ethosu_driver *drv, bool block)
     case ETHOSU_JOB_DONE:
         // Wait for interrupt in blocking mode. In non-blocking mode
         // the interrupt has already triggered
-        ret = ethosu_semaphore_take(drv->semaphore, ETHOSU_SEMAPHORE_WAIT_INFERENCE);
+        
+        LOG_DEBUG("Ethosu job done!!!");
+        //ret = ethosu_semaphore_take(drv->semaphore, ETHOSU_SEMAPHORE_WAIT_INFERENCE);
+        ret = 0;
+        
         if (ret < 0)
         {
             drv->job.result = ETHOSU_JOB_RESULT_TIMEOUT;
@@ -798,6 +804,7 @@ int ethosu_invoke_v3(struct ethosu_driver *drv,
         return -1;
     }
 
+    LOG_INFO("Wait ethosu done");
     return ethosu_wait(drv, true);
 }
 

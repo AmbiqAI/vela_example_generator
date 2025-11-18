@@ -1,9 +1,9 @@
 import re
 
 # === User settings ===
-input_file = "./fc_in__200__o_32_relu/converted_model/fc_in__200__o_32_relu_data.h"      # Your C or header file
-output_file = "./fc_in__200__o_32_relu/converted_model/fc_in__200__o_32_relu_output.txt"    # Output .txt file
-array_name = "fc_in__200__o_32_relu_output"  # Array variable name
+input_file = "./kws/kws_cmd_data.h"      # Your C or header file
+output_file = "./kws/kws_cmd_data.txt"    # Output .txt file
+array_name = "kws_cmd_data"  # Array variable name
 # ======================
 
 # Read the file

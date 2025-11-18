@@ -33,7 +33,7 @@ set(CMSIS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmsis_6" CACHE PATH "Path to CMSI
 
 set(LOG_NAMES err warning info debug)
 set(ETHOSU_LOG_ENABLE ON CACHE BOOL "Toggle driver logs on/off (Defaults to ON)")
-set(ETHOSU_LOG_SEVERITY "warning" CACHE STRING "Driver log severity level ${LOG_NAMES} (Defaults to 'warning')")
+set(ETHOSU_LOG_SEVERITY "debug" CACHE STRING "Driver log severity level ${LOG_NAMES} (Defaults to 'warning')")
 set(ETHOSU_TARGET_NPU_CONFIG "ethos-u55-128" CACHE STRING "Default NPU configuration")
 set(ETHOSU_INFERENCE_TIMEOUT "" CACHE STRING "Inference timeout (unit is implementation defined)")
 set_property(CACHE ETHOSU_LOG_SEVERITY PROPERTY STRINGS ${LOG_NAMES})

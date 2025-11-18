@@ -35,14 +35,13 @@
 #define ETHOSU_LOG_INFO 2
 #define ETHOSU_LOG_DEBUG 3
 
-// Define default log severity
 #ifndef ETHOSU_LOG_SEVERITY
 #define ETHOSU_LOG_SEVERITY ETHOSU_LOG_DEBUG
 #endif
 
 // Logs enabled by default
 #ifndef ETHOSU_LOG_ENABLE
-#define ETHOSU_LOG_ENABLE 0
+#define ETHOSU_LOG_ENABLE 1
 #endif
 
 extern uint32_t am_util_stdio_printf(const char *pcFmt, ...);
