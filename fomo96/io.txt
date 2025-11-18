@@ -1,0 +1,20 @@
+============================================================
+Model: fomo96.tflite
+============================================================
+
+Input Details:
+  Shape: [ 1 96 96  1]
+  Type: <class 'numpy.int8'>
+  Quantization: (0.003921568859368563, -128)
+
+Output Details:
+  Shape: [ 1 12 12  2]
+  Type: <class 'numpy.int8'>
+  Quantization: (0.00390625, -128)
+
+Generated random input with shape: (1, 96, 96, 1)
+Output shape: (1, 12, 12, 2)
+
+✓ Generated C header file: fomo96_data.h
+  Input array: fomo96_input[9216]
+  Output array: fomo96_output[288]
