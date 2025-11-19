@@ -618,8 +618,7 @@ int ethosu_wait(struct ethosu_driver *drv, bool block)
         // the interrupt has already triggered
         
         LOG_DEBUG("Ethosu job done!!!");
-        //ret = ethosu_semaphore_take(drv->semaphore, ETHOSU_SEMAPHORE_WAIT_INFERENCE);
-        ret = 0;
+        ret = ethosu_semaphore_take(drv->semaphore, ETHOSU_SEMAPHORE_WAIT_INFERENCE);
         
         if (ret < 0)
         {
