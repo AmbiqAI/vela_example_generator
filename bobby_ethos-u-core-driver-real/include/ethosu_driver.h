@@ -111,7 +111,7 @@ enum ethosu_request_clients
  *
  * @param drv       Pointer to driver handle
  */
-void ethosu_irq_handler(struct ethosu_driver *drv);
+//void ethosu_irq_handler(struct ethosu_driver *drv);
 
 /**
  * Flush/clean the data cache

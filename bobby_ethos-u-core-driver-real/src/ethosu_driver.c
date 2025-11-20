@@ -390,7 +390,7 @@ static void ethosu_reset_job(struct ethosu_driver *drv)
 
 static int handle_optimizer_config(struct ethosu_driver *drv, struct opt_cfg_s const *opt_cfg_p)
 {
-    LOG_INFO("Optimizer release nbr: %u patch: %u", opt_cfg_p->da_data.rel_nbr, opt_cfg_p->da_data.patch_nbr);
+    LOG_INFO("Optimizer release nbr: %d patch: %d", opt_cfg_p->da_data.rel_nbr, opt_cfg_p->da_data.patch_nbr);
 
     if (ethosu_dev_verify_optimizer_config(&drv->dev, opt_cfg_p->cfg, opt_cfg_p->id) != true)
     {
@@ -448,7 +448,7 @@ static int handle_command_stream(struct ethosu_driver *drv, const uint8_t *cmd_s
 /******************************************************************************
  * Weak functions - Interrupt handler
  ******************************************************************************/
-void __attribute__((weak)) ethosu_irq_handler(struct ethosu_driver *drv)
+/*void __attribute__((weak)) ethosu_irq_handler(struct ethosu_driver *drv)
 {
     // Prevent race condition where interrupt triggered after a timeout waiting
     // for semaphore, but before NPU is reset.
@@ -460,7 +460,7 @@ void __attribute__((weak)) ethosu_irq_handler(struct ethosu_driver *drv)
     drv->job.state  = ETHOSU_JOB_DONE;
     drv->job.result = ethosu_dev_handle_interrupt(&drv->dev) ? ETHOSU_JOB_RESULT_OK : ETHOSU_JOB_RESULT_ERROR;
     ethosu_semaphore_give(drv->semaphore);
-}
+}*/
 
 /******************************************************************************
  * Functions API
@@ -776,7 +776,7 @@ int ethosu_invoke_async(struct ethosu_driver *drv,
             data_ptr += DRIVER_ACTION_LENGTH_32_BIT_WORD;
             break;
         default:
-            LOG_ERR("UNSUPPORTED driver_action_command: %u", data_ptr->driver_action_command);
+            LOG_ERR("UNSUPPORTED driver_action_command: %x", data_ptr->driver_action_command);
             goto err;
             break;
         }
