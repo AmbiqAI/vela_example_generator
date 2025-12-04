@@ -16,9 +16,11 @@ This repo contains:
 3. Compile the resulting C as needed (at minimum you need a main() and a pointer to the Ethos register base)
 
 ## Compiling your model using Vela
+Vela needs to be told about memory and other HW configuration in a *.ini file. See /configs for several examples. Here we'll use bobby.ini:
 ```bash
 pip install ethos-u-vela
 vela --accelerator-config ethos-u85-256 ../clean/model_perf_tests/models/kws/kws_ref_model_aligned.tflite --output-format raw
+vela --accelerator-config ethos-u85-256 ../../clean/model_perf_tests/models/kws/kws_ref_model_aligned.tflite --output-format raw --config bobby.ini --system-config AmbiqLP --memory-mode Sram_Only
 ```
 
 ## Converting model to C

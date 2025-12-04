@@ -1,0 +1,7 @@
+/Users/carlosmorales/dev/vela_example_generator/ethos-u-core-driver-real/build/CMakeFiles/ethosu_core_driver.dir
+/Users/carlosmorales/dev/vela_example_generator/ethos-u-core-driver-real/build/CMakeFiles/edit_cache.dir
+/Users/carlosmorales/dev/vela_example_generator/ethos-u-core-driver-real/build/CMakeFiles/rebuild_cache.dir
+/Users/carlosmorales/dev/vela_example_generator/ethos-u-core-driver-real/build/CMakeFiles/list_install_components.dir
+/Users/carlosmorales/dev/vela_example_generator/ethos-u-core-driver-real/build/CMakeFiles/install.dir
+/Users/carlosmorales/dev/vela_example_generator/ethos-u-core-driver-real/build/CMakeFiles/install/local.dir
+/Users/carlosmorales/dev/vela_example_generator/ethos-u-core-driver-real/build/CMakeFiles/install/strip.dir

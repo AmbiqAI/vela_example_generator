@@ -1,0 +1,2 @@
+/Users/carlosmorales/dev/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ar qc libethosu_core_driver.a CMakeFiles/ethosu_core_driver.dir/src/ethosu_driver.c.obj CMakeFiles/ethosu_core_driver.dir/src/ethosu_pmu.c.obj CMakeFiles/ethosu_core_driver.dir/src/ethosu_device_u85.c.obj
+/Users/carlosmorales/dev/gcc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ranlib libethosu_core_driver.a
