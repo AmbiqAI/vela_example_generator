@@ -146,7 +146,7 @@ void ethosu_dev_run_command_stream(struct ethosu_device *dev,
     struct regioncfg_r rcfg = {0};
     uint64_t qbase          = ethosu_address_remap((uintptr_t)cmd_stream_ptr, -1);
     assert(qbase <= ADDRESS_MASK);
-    LOG_DEBUG("QBASE=0x%016llx, QSIZE=%" PRIu32 ", cmd_stream_ptr=%p", qbase, cms_length, cmd_stream_ptr);
+    LOG_DEBUG("QBASE=0x%016llx, QSIZE=%" PRIu32 ", cmd_stream_ptr=0x%x", qbase, cms_length, (uintptr_t)cmd_stream_ptr);
 
     dev->reg->QBASE.word[0] = qbase & 0xffffffff;
     dev->reg->QBASE.word[1] = qbase >> 32;

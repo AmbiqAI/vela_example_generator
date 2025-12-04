@@ -91,10 +91,15 @@ void ethosu_semaphore_destroy(void *sem)
 
 int ethosu_semaphore_take(void *sem, uint64_t timeout)
 {
-    (void)timeout;  // keep signature; implement if you need timeouts
     struct ethosu_semaphore_t *s = (struct ethosu_semaphore_t *)sem;
     while (s->count == 0) {
-        __WFE();
+        if(timeout>0){
+            timeout--;
+            __WFE();
+        }
+        else{
+            return -1;
+        }
     }
     s->count--;
     return 0;
@@ -346,7 +351,7 @@ static void ethosu_register_driver(struct ethosu_driver *drv)
 
     ethosu_semaphore_give(ethosu_semaphore);
 
-    LOG_INFO("New NPU driver registered (handle: 0x%p, NPU: 0x%p)", drv, drv->dev.reg);
+    LOG_INFO("New NPU driver registered (handle: 0x%x, NPU: 0x%x)", (uintptr_t)drv, (uintptr_t)drv->dev.reg);
 }
 
 static int ethosu_deregister_driver(struct ethosu_driver *drv)
@@ -404,11 +409,11 @@ static int handle_command_stream(struct ethosu_driver *drv, const uint8_t *cmd_s
 {
     uint32_t cms_bytes = cms_length * BYTES_IN_32_BITS;
 
-    LOG_INFO("handle_command_stream: cmd_stream=%p, cms_length %d", cmd_stream, cms_length);
+    LOG_INFO("handle_command_stream: cmd_stream=0x%x, cms_length %d", (uintptr_t)cmd_stream, cms_length);
 
     if (0 != ((ptrdiff_t)cmd_stream & MASK_16_BYTE_ALIGN))
     {
-        LOG_ERR("Command stream addr %p not aligned to 16 bytes", cmd_stream);
+        LOG_ERR("Command stream addr 0x%x not aligned to 16 bytes", (uintptr_t)cmd_stream);
         return -1;
     }
 
@@ -473,10 +478,9 @@ int ethosu_init(struct ethosu_driver *drv,
                 uint32_t secure_enable,
                 uint32_t privilege_enable)
 {
-    LOG_INFO("Initializing NPU: base_address=%p, fast_memory=%p, fast_memory_size=%zu, secure=%" PRIu32
-             ", privileged=%" PRIu32,
-             base_address,
-             fast_memory,
+    LOG_INFO("Initializing NPU: base_address=0x%x, fast_memory=0x%x, fast_memory_size=%d, secure=%d, privileged=%d", 
+             (uintptr_t)base_address,
+             (uintptr_t)fast_memory,
              fast_memory_size,
              secure_enable,
              privilege_enable);
@@ -518,7 +522,7 @@ int ethosu_init(struct ethosu_driver *drv,
         LOG_ERR("Failed to create driver semaphore");
         return -1;
     }
-
+    
     ethosu_reset_job(drv);
     ethosu_register_driver(drv);
 
@@ -617,11 +621,11 @@ int ethosu_wait(struct ethosu_driver *drv, bool block)
         // Wait for interrupt in blocking mode. In non-blocking mode
         // the interrupt has already triggered
         
-        LOG_DEBUG("Ethosu job done!!!");
         ret = ethosu_semaphore_take(drv->semaphore, ETHOSU_SEMAPHORE_WAIT_INFERENCE);
         
         if (ret < 0)
         {
+            LOG_DEBUG("Ethosu job timeout!!!");
             drv->job.result = ETHOSU_JOB_RESULT_TIMEOUT;
 
             // There's a race where the NPU interrupt can have fired between semaphore
