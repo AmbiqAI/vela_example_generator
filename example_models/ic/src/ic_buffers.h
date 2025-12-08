@@ -1,5 +1,5 @@
 /*
- * Auto-generated from: pretrainedResnet_quant_aligned_vela.npz
+ * Auto-generated from: ic_vela.npz
  * Do not edit by hand.
  *
  * Generated for Ethos-U direct driver invocation (no TFLM).
