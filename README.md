@@ -30,7 +30,7 @@ python vela_raw_to_c.py ../output/kws_ref_model_aligned_vela.npz --out-dir . --p
 ## Run generate_c_arrays.py
 Run generate_c_arrays.py to get the reference inputs and outputs as a header file 
 ```bash
-python % python3 python/generate_c_arrays.py ../<path to tflite>/kws_ref_model.tflite
+python3 python/generate_c_arrays.py ../<path to tflite>/kws_ref_model.tflite
 ```
 
 ## Compiling Ethos Driver
