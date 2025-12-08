@@ -28,7 +28,7 @@ vela --accelerator-config ethos-u85-256 ../../clean/model_perf_tests/models/kws/
 python vela_raw_to_c.py ../output/kws_ref_model_aligned_vela.npz --out-dir . --prefix foo
 ```
 ## Run generate_c_arrays.py
-Run generate_c_arrays.py to get the reference inputs and outputs as a header file 
+Run generate_c_arrays.py to get the reference inputs and outputs as a header file. If -o,--output is not set will generate <model_name>_data.h in the same path as the tflite model.
 ```bash
 python3 python/generate_c_arrays.py ../<path to tflite>/kws_ref_model.tflite
 ```
