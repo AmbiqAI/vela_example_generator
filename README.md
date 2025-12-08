@@ -27,6 +27,11 @@ vela --accelerator-config ethos-u85-256 ../../clean/model_perf_tests/models/kws/
 ```bash
 python vela_raw_to_c.py ../output/kws_ref_model_aligned_vela.npz --out-dir . --prefix foo
 ```
+## Run generate_c_arrays.py
+Run generate_c_arrays.py to get the reference inputs and outputs as a header file 
+```bash
+python % python3 python/generate_c_arrays.py ../<path to tflite>/kws_ref_model.tflite
+```
 
 ## Compiling Ethos Driver
 The repo contains contains a pre-built ethos static lib ready for linking into a C project, but if you need to modify something, here is how to compile
