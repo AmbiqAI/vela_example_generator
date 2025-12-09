@@ -19,18 +19,23 @@ This repo contains:
 Vela needs to be told about memory and other HW configuration in a *.ini file. See /configs for several examples. Here we'll use bobby.ini:
 ```bash
 pip install ethos-u-vela
-vela --accelerator-config ethos-u85-256 ../clean/model_perf_tests/models/kws/kws_ref_model_aligned.tflite --output-format raw
-vela --accelerator-config ethos-u85-256 ../../clean/model_perf_tests/models/kws/kws_ref_model_aligned.tflite --output-format raw --config bobby.ini --system-config AmbiqLP --memory-mode Sram_Only
+vela --accelerator-config ethos-u85-256 mobilenet_v3_sm_min_s8_md.tflite --output-format raw --config ambiq_final.ini --system-config AmbiqLP_SRAM --memory-mode Sram_Only_256KB
 ```
 
 ## Converting model to C
 ```bash
-python vela_raw_to_c.py ../output/kws_ref_model_aligned_vela.npz --out-dir . --prefix foo
+python3 vela_raw_to_c.py ../output/kws_ref_model_aligned_vela.npz --out-dir . --prefix foo
 ```
 ## Run generate_c_arrays.py
 Run generate_c_arrays.py to get the reference inputs and outputs as a header file. If -o,--output is not set will generate <model_name>_data.h in the same path as the tflite model.
 ```bash
 python3 python/generate_c_arrays.py ../<path to tflite>/kws_ref_model.tflite
+```
+
+## Converting C to txt
+## change the input file/output file/array name in array_2_txt.py 
+```bash
+python3 array_2_txt.py
 ```
 
 ## Compiling Ethos Driver
