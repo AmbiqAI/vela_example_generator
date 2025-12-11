@@ -33,9 +33,74 @@ python3 python/generate_c_arrays.py ../<path to tflite>/kws_ref_model.tflite
 ```
 
 ## Converting C to txt
-## change the input file/output file/array name in array_2_txt.py 
+The `array_2_txt.py` script automatically extracts arrays from C header files and generates text files:
+- `input.txt` (from `*_input` array)
+- `golden_output.txt` (from `*_output` array)
+- `weights.txt` (from `*_weights` array)
+- `cmd_data.txt` (from `*_cmd_data` array)
+
+The script is automatically run as part of the pipeline, but can also be run manually:
 ```bash
-python3 array_2_txt.py
+python3 python/array_2_txt.py model_data.h model_cmd_data.h model_weights.h -o src/
+```
+
+## Slicing Models
+The `slice_tflite.py` script can split a TFLite model into multiple slices (prefixes of the operator sequence) for incremental testing or debugging. Each slice contains the first N operators of the model.
+
+### Basic Usage
+```bash
+# Slice model into chunks of 5 operators each
+python3 python/slice_tflite.py example_models/resnet_v1_8_32_tfs_int8/resnet_v1_8_32_tfs_int8_17.tflite --step 5
+```
+
+This creates subfolders `slice_1/`, `slice_2/`, etc., each containing a `.tflite` file with progressively more operators.
+
+### Running Pipeline on Each Slice
+To automatically run the full vela pipeline on each slice:
+```bash
+python3 python/slice_tflite.py example_models/resnet_v1_8_32_tfs_int8/resnet_v1_8_32_tfs_int8_17.tflite --step 5 --run-pipeline
+```
+
+This will:
+1. Create slices in `slice_1/`, `slice_2/`, etc.
+2. Run the full vela pipeline for each slice
+3. Generate all outputs (C files, txt files) in `slice_N/output/` for each slice
+
+### Custom Options
+```bash
+# Custom step size and output directory
+python3 python/slice_tflite.py model.tflite --step 10 --output-dir slices/
+
+# With custom vela configuration
+python3 python/slice_tflite.py model.tflite --step 5 --run-pipeline \
+    --accelerator-config ethos-u55-128 \
+    --system-config AmbiqLP \
+    --memory-mode Sram_Only_256KB \
+    --vela-verbose
+
+# Skip certain pipeline steps
+python3 python/slice_tflite.py model.tflite --step 5 --run-pipeline \
+    --skip-c-arrays \
+    --skip-array-to-txt
+```
+
+### Output Structure
+With `--run-pipeline`, each slice gets its own output directory:
+```
+slice_1/
+  ├── model_1.tflite
+  └── output/
+      ├── model_1_vela.npz
+      ├── model_1_cmd_data.h
+      ├── model_1_weights.h
+      ├── model_1_data.h
+      └── src/
+          ├── input.txt
+          ├── golden_output.txt
+          ├── weights.txt
+          └── cmd_data.txt
+slice_2/
+  └── ...
 ```
 
 ## Compiling Ethos Driver
