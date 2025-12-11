@@ -32,7 +32,7 @@ def run_command(cmd, description, check=True):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Run vela pipeline: vela -> vela_raw_to_c.py -> generate_c_arrays.py',
+        description='Run vela pipeline: vela -> vela_raw_to_c.py -> generate_c_arrays.py -> array_2_txt.py',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -54,6 +54,14 @@ Examples:
       --vela-prefix ic \\
       --vela-config config/ambiq.ini \\
       --vela-verbose
+  
+  # Convert only input array to txt
+  python run_vela_pipeline.py ic.tflite \\
+      --array-to-txt-which input
+  
+  # Custom array name for txt conversion
+  python run_vela_pipeline.py ic.tflite \\
+      --array-to-txt-array-name custom_array_name
         """
     )
     
@@ -165,6 +173,27 @@ Examples:
     )
     
     parser.add_argument(
+        '--skip-array-to-txt',
+        action='store_true',
+        help='Skip array_2_txt.py step'
+    )
+    
+    parser.add_argument(
+        '--array-to-txt-array-name',
+        type=str,
+        default=None,
+        help='Array name for array_2_txt.py (default: <model_name>_input or <model_name>_output)'
+    )
+    
+    parser.add_argument(
+        '--array-to-txt-which',
+        type=str,
+        choices=['input', 'output', 'both'],
+        default='both',
+        help='Which array(s) to convert to txt: input, output, or both (default: both)'
+    )
+    
+    parser.add_argument(
         '--clean',
         action='store_true',
         help='Clean output directory before running'
@@ -226,6 +255,13 @@ Examples:
             print(f"Error: Vela config file not found: {vela_config_path}", file=sys.stderr)
             sys.exit(1)
         
+        # Vela uses --output-dir, not --output
+        # For raw format, vela creates a file named <input_basename>_vela.npz in the output directory
+        vela_output_dir = vela_output_npz.parent
+        vela_output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Vela will create a file with pattern: <input_name>_vela.npz
+        # We'll use output-dir and then check/rename if needed
         vela_cmd = [
             args.vela_cmd,
             '--accelerator-config', args.accelerator_config,
@@ -234,7 +270,7 @@ Examples:
             '--config', str(vela_config_path),
             '--system-config', args.system_config,
             '--memory-mode', args.memory_mode,
-            '--output', str(vela_output_npz)
+            '--output-dir', str(vela_output_dir)
         ]
         
         if args.vela_verbose:
@@ -246,8 +282,29 @@ Examples:
             print("Error: Vela failed", file=sys.stderr)
             sys.exit(1)
         
+        # Vela creates output file with pattern: <input_basename>_vela.npz
+        # Check if our expected file exists, or find what vela created
+        expected_name = f"{tflite_path.stem}_vela.npz"
+        vela_created_file = vela_output_dir / expected_name
+        
+        # If vela created a different filename, try to find it
+        if not vela_created_file.exists():
+            # Look for any .npz file in the output directory
+            npz_files = list(vela_output_dir.glob("*.npz"))
+            if npz_files:
+                vela_created_file = npz_files[0]
+                print(f"Note: Vela created {vela_created_file.name}, expected {expected_name}")
+        
+        # Rename to our expected filename if different
+        if vela_created_file.exists() and vela_created_file != vela_output_npz:
+            vela_created_file.rename(vela_output_npz)
+            print(f"Renamed vela output to: {vela_output_npz.name}")
+        
         if not vela_output_npz.exists():
             print(f"Error: Vela output file not found: {vela_output_npz}", file=sys.stderr)
+            print(f"  Expected: {vela_output_npz}")
+            print(f"  Checked: {vela_created_file}")
+            print(f"  Files in {vela_output_dir}: {list(vela_output_dir.glob('*'))}")
             sys.exit(1)
         
         print(f"\n✓ Vela output: {vela_output_npz}")
@@ -323,6 +380,55 @@ Examples:
     else:
         print(f"\n⏭ Skipping generate_c_arrays.py step")
     
+    # Step 4: Run array_2_txt.py
+    if not args.skip_array_to_txt and not args.skip_c_arrays:
+        python_dir = Path(args.python_dir)
+        if not python_dir.is_absolute():
+            python_dir = script_dir / python_dir
+        
+        array_2_txt_script = python_dir / "array_2_txt.py"
+        
+        if not array_2_txt_script.exists():
+            print(f"Error: array_2_txt.py not found: {array_2_txt_script}", file=sys.stderr)
+            sys.exit(1)
+        
+        # Determine which arrays to convert
+        arrays_to_convert = []
+        if args.array_to_txt_which in ['input', 'both']:
+            arrays_to_convert.append(('input', f"{model_name}_input"))
+        if args.array_to_txt_which in ['output', 'both']:
+            arrays_to_convert.append(('output', f"{model_name}_output"))
+        
+        for array_type, array_name in arrays_to_convert:
+            # Use custom array name if provided, otherwise use default
+            actual_array_name = args.array_to_txt_array_name or array_name
+            
+            # Output file: <model_name>_<type>.txt
+            txt_output = output_dir / f"{model_name}_{array_type}.txt"
+            
+            array_to_txt_cmd = [
+                sys.executable,
+                str(array_2_txt_script),
+                str(c_arrays_output),
+                actual_array_name,
+                '-o', str(txt_output)
+            ]
+            
+            success = run_command(
+                array_to_txt_cmd, 
+                f"Step 4: Running array_2_txt.py ({array_type} array: {actual_array_name})"
+            )
+            
+            if not success:
+                print(f"Warning: array_2_txt.py failed for {array_type} array", file=sys.stderr)
+            else:
+                print(f"\n✓ array_2_txt.py output: {txt_output}")
+    else:
+        if args.skip_c_arrays:
+            print(f"\n⏭ Skipping array_2_txt.py step (requires generate_c_arrays.py output)")
+        else:
+            print(f"\n⏭ Skipping array_2_txt.py step")
+    
     # Summary
     print(f"\n{'='*60}")
     print("Pipeline Complete!")
@@ -341,6 +447,12 @@ Examples:
     if not args.skip_c_arrays:
         c_arrays_file = args.c_arrays_output or f"{model_name}_data.h"
         print(f"  - {c_arrays_file}")
+    
+    if not args.skip_array_to_txt and not args.skip_c_arrays:
+        if args.array_to_txt_which in ['input', 'both']:
+            print(f"  - {model_name}_input.txt")
+        if args.array_to_txt_which in ['output', 'both']:
+            print(f"  - {model_name}_output.txt")
     
     if not args.skip_vela:
         print(f"  - {model_name}_vela.npz")
