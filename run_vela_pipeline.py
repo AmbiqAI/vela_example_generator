@@ -55,13 +55,9 @@ Examples:
       --vela-config config/ambiq.ini \\
       --vela-verbose
   
-  # Convert only input array to txt
+  # Skip txt file generation
   python run_vela_pipeline.py ic.tflite \\
-      --array-to-txt-which input
-  
-  # Custom array name for txt conversion
-  python run_vela_pipeline.py ic.tflite \\
-      --array-to-txt-array-name custom_array_name
+      --skip-array-to-txt
         """
     )
     
@@ -105,8 +101,8 @@ Examples:
     parser.add_argument(
         '--memory-mode',
         type=str,
-        default='Sram_Only',
-        help='Vela memory mode (default: Sram_Only)'
+        default='Sram_Only_256KB',
+        help='Vela memory mode (default: Sram_Only_256KB)'
     )
     
     parser.add_argument(
@@ -175,22 +171,7 @@ Examples:
     parser.add_argument(
         '--skip-array-to-txt',
         action='store_true',
-        help='Skip array_2_txt.py step'
-    )
-    
-    parser.add_argument(
-        '--array-to-txt-array-name',
-        type=str,
-        default=None,
-        help='Array name for array_2_txt.py (default: <model_name>_input or <model_name>_output)'
-    )
-    
-    parser.add_argument(
-        '--array-to-txt-which',
-        type=str,
-        choices=['input', 'output', 'both'],
-        default='both',
-        help='Which array(s) to convert to txt: input, output, or both (default: both)'
+        help='Skip array_2_txt.py step (generates input.txt, golden_output.txt, weights.txt, cmd_data.txt)'
     )
     
     parser.add_argument(
@@ -381,7 +362,7 @@ Examples:
         print(f"\n⏭ Skipping generate_c_arrays.py step")
     
     # Step 4: Run array_2_txt.py
-    if not args.skip_array_to_txt and not args.skip_c_arrays:
+    if not args.skip_array_to_txt:
         python_dir = Path(args.python_dir)
         if not python_dir.is_absolute():
             python_dir = script_dir / python_dir
@@ -392,42 +373,51 @@ Examples:
             print(f"Error: array_2_txt.py not found: {array_2_txt_script}", file=sys.stderr)
             sys.exit(1)
         
-        # Determine which arrays to convert
-        arrays_to_convert = []
-        if args.array_to_txt_which in ['input', 'both']:
-            arrays_to_convert.append(('input', f"{model_name}_input"))
-        if args.array_to_txt_which in ['output', 'both']:
-            arrays_to_convert.append(('output', f"{model_name}_output"))
+        # Collect all header files that might contain arrays
+        input_files = []
         
-        for array_type, array_name in arrays_to_convert:
-            # Use custom array name if provided, otherwise use default
-            actual_array_name = args.array_to_txt_array_name or array_name
-            
-            # Output file: <model_name>_<type>.txt
-            txt_output = output_dir / f"{model_name}_{array_type}.txt"
+        # Add *_data.h (contains input and output arrays)
+        if not args.skip_c_arrays:
+            input_files.append(c_arrays_output)
+        
+        # Add *_cmd_data.h and *_weights.h (from vela_raw_to_c.py)
+        if not args.skip_raw_to_c:
+            cmd_data_h = output_dir / f"{prefix}_cmd_data.h"
+            weights_h = output_dir / f"{prefix}_weights.h"
+            if cmd_data_h.exists():
+                input_files.append(cmd_data_h)
+            if weights_h.exists():
+                input_files.append(weights_h)
+        
+        if not input_files:
+            print(f"Warning: No input files found for array_2_txt.py", file=sys.stderr)
+        else:
+            # Create src directory for output txt files
+            src_dir = output_dir / "src"
+            src_dir.mkdir(parents=True, exist_ok=True)
             
             array_to_txt_cmd = [
                 sys.executable,
                 str(array_2_txt_script),
-                str(c_arrays_output),
-                actual_array_name,
-                '-o', str(txt_output)
+            ] + [str(f) for f in input_files] + [
+                '-o', str(src_dir)
             ]
             
             success = run_command(
                 array_to_txt_cmd, 
-                f"Step 4: Running array_2_txt.py ({array_type} array: {actual_array_name})"
+                f"Step 4: Running array_2_txt.py (extracting all arrays)"
             )
             
             if not success:
-                print(f"Warning: array_2_txt.py failed for {array_type} array", file=sys.stderr)
+                print(f"Warning: array_2_txt.py failed", file=sys.stderr)
             else:
-                print(f"\n✓ array_2_txt.py output: {txt_output}")
+                print(f"\n✓ array_2_txt.py output in: {src_dir}")
+                print(f"  - input.txt")
+                print(f"  - golden_output.txt")
+                print(f"  - weights.txt")
+                print(f"  - cmd_data.txt")
     else:
-        if args.skip_c_arrays:
-            print(f"\n⏭ Skipping array_2_txt.py step (requires generate_c_arrays.py output)")
-        else:
-            print(f"\n⏭ Skipping array_2_txt.py step")
+        print(f"\n⏭ Skipping array_2_txt.py step")
     
     # Summary
     print(f"\n{'='*60}")
@@ -448,11 +438,11 @@ Examples:
         c_arrays_file = args.c_arrays_output or f"{model_name}_data.h"
         print(f"  - {c_arrays_file}")
     
-    if not args.skip_array_to_txt and not args.skip_c_arrays:
-        if args.array_to_txt_which in ['input', 'both']:
-            print(f"  - {model_name}_input.txt")
-        if args.array_to_txt_which in ['output', 'both']:
-            print(f"  - {model_name}_output.txt")
+    if not args.skip_array_to_txt:
+        print(f"  - src/input.txt")
+        print(f"  - src/golden_output.txt")
+        print(f"  - src/weights.txt")
+        print(f"  - src/cmd_data.txt")
     
     if not args.skip_vela:
         print(f"  - {model_name}_vela.npz")

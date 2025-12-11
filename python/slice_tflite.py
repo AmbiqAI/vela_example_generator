@@ -284,8 +284,8 @@ def main():
     parser.add_argument(
         "--memory-mode",
         type=str,
-        default="Sram_Only",
-        help="Vela memory mode (default: Sram_Only)",
+        default="Sram_Only_256KB",
+        help="Vela memory mode (default: Sram_Only_256KB)",
     )
     parser.add_argument(
         "--vela-verbose",
