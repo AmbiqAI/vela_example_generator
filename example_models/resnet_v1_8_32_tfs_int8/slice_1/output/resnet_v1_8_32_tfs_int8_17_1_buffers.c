@@ -10,13 +10,11 @@
 #include "resnet_v1_8_32_tfs_int8_17_1_weights.h"
 #include "resnet_v1_8_32_tfs_int8_17_1_meta.h"
 
-__attribute__((aligned(32))) static uint8_t resnet_v1_8_32_tfs_int8_17_1_region_1[16384] = {0};
-__attribute__((aligned(32))) static uint8_t resnet_v1_8_32_tfs_int8_17_1_region_2[38272] = {0};
+__attribute__((aligned(32))) static uint8_t resnet_v1_8_32_tfs_int8_17_1_region_1[6144] = {0};
 
 uint8_t* get_region_base_ptr(int region) {
     switch(region) {
     case 1: return resnet_v1_8_32_tfs_int8_17_1_region_1;
-    case 2: return resnet_v1_8_32_tfs_int8_17_1_region_2;
     case 0: return (uint8_t*)resnet_v1_8_32_tfs_int8_17_1_weights; // weights region
     default: return (uint8_t*)0; // unused region
     }
@@ -25,7 +23,6 @@ uint8_t* get_region_base_ptr(int region) {
 size_t get_region_size(int region) {
     switch(region) {
     case 1: return sizeof(resnet_v1_8_32_tfs_int8_17_1_region_1);
-    case 2: return sizeof(resnet_v1_8_32_tfs_int8_17_1_region_2);
     case 0: return resnet_v1_8_32_tfs_int8_17_1_weights_size;
     default: return 0;
     }

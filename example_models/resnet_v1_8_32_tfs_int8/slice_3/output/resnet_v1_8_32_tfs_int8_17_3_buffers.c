@@ -10,8 +10,8 @@
 #include "resnet_v1_8_32_tfs_int8_17_3_weights.h"
 #include "resnet_v1_8_32_tfs_int8_17_3_meta.h"
 
-__attribute__((aligned(32))) static uint8_t resnet_v1_8_32_tfs_int8_17_3_region_1[3072] = {0};
-__attribute__((aligned(32))) static uint8_t resnet_v1_8_32_tfs_int8_17_3_region_2[57376] = {0};
+__attribute__((aligned(32))) static uint8_t resnet_v1_8_32_tfs_int8_17_3_region_1[16384] = {0};
+__attribute__((aligned(32))) static uint8_t resnet_v1_8_32_tfs_int8_17_3_region_2[38272] = {0};
 
 uint8_t* get_region_base_ptr(int region) {
     switch(region) {
