@@ -91,15 +91,10 @@ void ethosu_semaphore_destroy(void *sem)
 
 int ethosu_semaphore_take(void *sem, uint64_t timeout)
 {
+    (void)timeout;  // keep signature; implement if you need timeouts
     struct ethosu_semaphore_t *s = (struct ethosu_semaphore_t *)sem;
     while (s->count == 0) {
-        if(timeout>0){
-            timeout--;
-            __WFE();
-        }
-        else{
-            return -1;
-        }
+        __WFE();
     }
     s->count--;
     return 0;
@@ -351,7 +346,7 @@ static void ethosu_register_driver(struct ethosu_driver *drv)
 
     ethosu_semaphore_give(ethosu_semaphore);
 
-    LOG_INFO("New NPU driver registered (handle: 0x%x, NPU: 0x%x)", (uintptr_t)drv, (uintptr_t)drv->dev.reg);
+    LOG_INFO("New NPU driver registered (handle: 0x%p, NPU: 0x%p)", drv, drv->dev.reg);
 }
 
 static int ethosu_deregister_driver(struct ethosu_driver *drv)
@@ -395,7 +390,7 @@ static void ethosu_reset_job(struct ethosu_driver *drv)
 
 static int handle_optimizer_config(struct ethosu_driver *drv, struct opt_cfg_s const *opt_cfg_p)
 {
-    LOG_INFO("Optimizer release nbr: %d patch: %d", opt_cfg_p->da_data.rel_nbr, opt_cfg_p->da_data.patch_nbr);
+    LOG_INFO("Optimizer release nbr: %u patch: %u", opt_cfg_p->da_data.rel_nbr, opt_cfg_p->da_data.patch_nbr);
 
     if (ethosu_dev_verify_optimizer_config(&drv->dev, opt_cfg_p->cfg, opt_cfg_p->id) != true)
     {
@@ -409,11 +404,11 @@ static int handle_command_stream(struct ethosu_driver *drv, const uint8_t *cmd_s
 {
     uint32_t cms_bytes = cms_length * BYTES_IN_32_BITS;
 
-    LOG_INFO("handle_command_stream: cmd_stream=0x%x, cms_length %d", (uintptr_t)cmd_stream, cms_length);
+    LOG_INFO("handle_command_stream: cmd_stream=%x, cms_length %d", cmd_stream, cms_length);
 
     if (0 != ((ptrdiff_t)cmd_stream & MASK_16_BYTE_ALIGN))
     {
-        LOG_ERR("Command stream addr 0x%x not aligned to 16 bytes", (uintptr_t)cmd_stream);
+        LOG_ERR("Command stream addr %p not aligned to 16 bytes", cmd_stream);
         return -1;
     }
 
@@ -425,8 +420,6 @@ static int handle_command_stream(struct ethosu_driver *drv, const uint8_t *cmd_s
             LOG_ERR("Base addr %d: 0x%" PRIx64 "not aligned to 16 bytes", i, drv->job.base_addr[i]);
             return -1;
         }
-        LOG_INFO("Base addr %d: 0x%x", i, drv->job.base_addr[i]);
-        LOG_INFO("Base size %d: %d", i, drv->job.base_addr_size[i]);
     }
 
     // Flush/clean the data cache
@@ -453,7 +446,7 @@ static int handle_command_stream(struct ethosu_driver *drv, const uint8_t *cmd_s
 /******************************************************************************
  * Weak functions - Interrupt handler
  ******************************************************************************/
-/*void __attribute__((weak)) ethosu_irq_handler(struct ethosu_driver *drv)
+void __attribute__((weak)) ethosu_irq_handler(struct ethosu_driver *drv)
 {
     // Prevent race condition where interrupt triggered after a timeout waiting
     // for semaphore, but before NPU is reset.
@@ -465,7 +458,7 @@ static int handle_command_stream(struct ethosu_driver *drv, const uint8_t *cmd_s
     drv->job.state  = ETHOSU_JOB_DONE;
     drv->job.result = ethosu_dev_handle_interrupt(&drv->dev) ? ETHOSU_JOB_RESULT_OK : ETHOSU_JOB_RESULT_ERROR;
     ethosu_semaphore_give(drv->semaphore);
-}*/
+}
 
 /******************************************************************************
  * Functions API
@@ -478,9 +471,9 @@ int ethosu_init(struct ethosu_driver *drv,
                 uint32_t secure_enable,
                 uint32_t privilege_enable)
 {
-    LOG_INFO("Initializing NPU: base_address=0x%x, fast_memory=0x%x, fast_memory_size=%d, secure=%d, privileged=%d", 
-             (uintptr_t)base_address,
-             (uintptr_t)fast_memory,
+    LOG_INFO("Initializing NPU: base_address=%x, fast_memory=%x, fast_memory_size=%d, secure=%d,  privileged=%d",
+             base_address,
+             fast_memory,
              fast_memory_size,
              secure_enable,
              privilege_enable);
@@ -522,7 +515,7 @@ int ethosu_init(struct ethosu_driver *drv,
         LOG_ERR("Failed to create driver semaphore");
         return -1;
     }
-    
+
     ethosu_reset_job(drv);
     ethosu_register_driver(drv);
 
@@ -620,12 +613,9 @@ int ethosu_wait(struct ethosu_driver *drv, bool block)
     case ETHOSU_JOB_DONE:
         // Wait for interrupt in blocking mode. In non-blocking mode
         // the interrupt has already triggered
-        
         ret = ethosu_semaphore_take(drv->semaphore, ETHOSU_SEMAPHORE_WAIT_INFERENCE);
-        
         if (ret < 0)
         {
-            LOG_DEBUG("Ethosu job timeout!!!");
             drv->job.result = ETHOSU_JOB_RESULT_TIMEOUT;
 
             // There's a race where the NPU interrupt can have fired between semaphore
@@ -721,7 +711,7 @@ int ethosu_invoke_async(struct ethosu_driver *drv,
     // First word in custom_data_ptr should contain "Custom Operator Payload 1"
     if (data_ptr->word != ETHOSU_FOURCC)
     {
-        LOG_ERR("Custom Operator Payload: %" PRIu32 " is not correct, expected %x", data_ptr->word, ETHOSU_FOURCC);
+        LOG_ERR("Custom Operator Payload: %x is not correct, expected %x", data_ptr->word, ETHOSU_FOURCC);
         goto err;
     }
 
@@ -739,7 +729,7 @@ int ethosu_invoke_async(struct ethosu_driver *drv,
     {
         if (base_addr_size[FAST_MEMORY_BASE_ADDR_INDEX] > drv->fast_memory_size)
         {
-            LOG_ERR("Fast memory area too small. fast_memory_size=%zu, base_addr_size=%zu",
+            LOG_ERR("Fast memory area too small. fast_memory_size=%d, base_addr_size=%d",
                     drv->fast_memory_size,
                     base_addr_size[FAST_MEMORY_BASE_ADDR_INDEX]);
             goto err;
@@ -780,7 +770,7 @@ int ethosu_invoke_async(struct ethosu_driver *drv,
             data_ptr += DRIVER_ACTION_LENGTH_32_BIT_WORD;
             break;
         default:
-            LOG_ERR("UNSUPPORTED driver_action_command: %x", data_ptr->driver_action_command);
+            LOG_ERR("UNSUPPORTED driver_action_command: %d", data_ptr->driver_action_command);
             goto err;
             break;
         }
@@ -807,7 +797,6 @@ int ethosu_invoke_v3(struct ethosu_driver *drv,
         return -1;
     }
 
-    LOG_INFO("Wait ethosu done");
     return ethosu_wait(drv, true);
 }
 
