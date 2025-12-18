@@ -1,5 +1,5 @@
 /*
- * Auto-generated from: ic_4_vela.npz
+ * Auto-generated from: strm_ww_int8_vela.npz
  * Do not edit by hand.
  *
  * Generated for Ethos-U direct driver invocation (no TFLM).

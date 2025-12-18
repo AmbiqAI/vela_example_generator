@@ -15,6 +15,34 @@ This repo contains:
 2. Convert the resulting raw output file (a serialized numpy file) into C
 3. Compile the resulting C as needed (at minimum you need a main() and a pointer to the Ethos register base)
 
+## Pipeline Runner (Recommended)
+The `run_vela_pipeline.py` script automates the entire process: running Vela, converting raw output to C, generating reference input/output arrays, and extracting them to text files.
+
+### Basic Usage
+```bash
+python3 run_vela_pipeline.py example_models/ic/ic.tflite
+```
+
+This will generate all files in a default output directory `example_models/ic/ic_output/`.
+
+### Custom Configuration
+```bash
+python3 run_vela_pipeline.py ic.tflite \
+    --output-dir output/ic \
+    --accelerator-config ethos-u85-256 \
+    --system-config AmbiqLP_SRAM \
+    --memory-mode Sram_Only_256KB
+```
+
+### Options
+- `--output-dir`: Custom output directory for all generated files.
+- `--vela-config`: Path to Vela configuration file (default: `config/ambiq_final.ini`).
+- `--skip-array-to-txt`: Skip generating the `.txt` files in `src/`.
+- `--clean`: Clean the output directory before running.
+
+## Manual Steps
+The following sections describe how to run each step of the pipeline manually.
+
 ## Compiling your model using Vela
 Vela needs to be told about memory and other HW configuration in a *.ini file. See /configs for several examples. Here we'll use bobby.ini:
 ```bash

@@ -1,5 +1,5 @@
 /*
- * Auto-generated from: ic_4_vela.npz
+ * Auto-generated from: strm_ww_int8_vela.npz
  * Do not edit by hand.
  *
  * Generated for Ethos-U direct driver invocation (no TFLM).
@@ -8,15 +8,15 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "ethosu_driver.h"
-#include "ic_4_cmd_data.h"
-#include "ic_4_weights.h"
-#include "ic_4_meta.h"
-#include "ic_4_buffers.h"
+#include "strm_ww_int8_cmd_data.h"
+#include "strm_ww_int8_weights.h"
+#include "strm_ww_int8_meta.h"
+#include "strm_ww_int8_buffers.h"
 
 // Provide your platform's NPU register base here.
 extern void *ethosu_get_regs_base(void);
 
-int ic_4_invoke(void) {
+int strm_ww_int8_invoke(void) {
     uint64_t base_addr[ETHOSU_MAX_REGIONS] = {0};
     size_t   base_size[ETHOSU_MAX_REGIONS] = {0};
 
@@ -39,7 +39,7 @@ int ic_4_invoke(void) {
     // ethosu_set_basep_cache_mask(&drv, /*flush_mask*/0xFF, /*invalidate_mask*/0xFF);
 
     rc = ethosu_invoke(&drv,
-                       ic_4_cmd_data, (int)ic_4_cmd_size,
+                       strm_ww_int8_cmd_data, (int)strm_ww_int8_cmd_size,
                        base_addr, base_size, ETHOSU_MAX_REGIONS);
     // Wait for completion if using async interface; here we use the sync wrapper.
     ethosu_deinit(&drv);
