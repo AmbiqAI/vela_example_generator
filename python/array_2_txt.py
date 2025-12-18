@@ -76,18 +76,22 @@ def find_arrays_in_file(file_path: Path) -> Dict[str, List[int]]:
     return arrays
 
 
-def get_output_filename(array_name: str) -> Optional[str]:
-    """Map array name to output filename."""
+def get_output_filename(array_name: str, prefix: Optional[str] = None) -> Optional[str]:
+    """Map array name to output filename with optional prefix."""
     # Map array name patterns to output filenames
+    name = None
     if array_name.endswith("_input"):
-        return "input.txt"
+        name = "input.txt"
     elif array_name.endswith("_output"):
-        return "golden_output.txt"
+        name = "golden_output.txt"
     elif array_name.endswith("_weights"):
-        return "weights.txt"
+        name = "weights.txt"
     elif array_name.endswith("_cmd_data"):
-        return "cmd_data.txt"
-    return None
+        name = "cmd_data.txt"
+    
+    if name and prefix:
+        return f"{prefix}_{name}"
+    return name
 
 
 def extract_array_to_txt(input_file, output_file, array_name):
@@ -124,11 +128,11 @@ def extract_array_to_txt(input_file, output_file, array_name):
         print(f"Error writing output file: {e}", file=sys.stderr)
         return False
     
-    print(f"Extracted {len(numbers)} values from '{array_name}' → {output_file}")
+    print(f"Extracted {len(numbers)} values from '{array_name}' → {output_path}")
     return True
 
 
-def extract_all_arrays(input_files: List[Path], output_dir: Path) -> bool:
+def extract_all_arrays(input_files: List[Path], output_dir: Path, prefix: Optional[str] = None) -> bool:
     """Extract all relevant arrays from input files and generate txt files."""
     all_arrays = {}
     
@@ -150,7 +154,7 @@ def extract_all_arrays(input_files: List[Path], output_dir: Path) -> bool:
     success_count = 0
     
     for array_name, numbers in all_arrays.items():
-        output_filename = get_output_filename(array_name)
+        output_filename = get_output_filename(array_name, prefix)
         if output_filename is None:
             # Skip arrays that don't match our patterns
             continue
@@ -191,6 +195,12 @@ def main():
         help='Output directory for txt files (default: same as first input file directory)'
     )
     parser.add_argument(
+        '--prefix',
+        type=str,
+        default=None,
+        help='Prefix for output txt filenames (e.g., "kws" -> kws_input.txt)'
+    )
+    parser.add_argument(
         '--array-name',
         type=str,
         default=None,
@@ -215,7 +225,8 @@ def main():
         
         if args.output is None:
             input_path = input_paths[0]
-            output_file = str(input_path.parent / f"{input_path.stem}.txt")
+            prefix = args.prefix + "_" if args.prefix else ""
+            output_file = str(input_path.parent / f"{prefix}{input_path.stem}.txt")
         else:
             output_file = args.output
         
@@ -228,7 +239,7 @@ def main():
     else:
         output_dir = Path(args.output_dir)
     
-    success = extract_all_arrays(input_paths, output_dir)
+    success = extract_all_arrays(input_paths, output_dir, args.prefix)
     sys.exit(0 if success else 1)
 
 

@@ -400,22 +400,23 @@ Examples:
                 sys.executable,
                 str(array_2_txt_script),
             ] + [str(f) for f in input_files] + [
-                '-o', str(src_dir)
+                '-o', str(src_dir),
+                '--prefix', prefix
             ]
             
             success = run_command(
                 array_to_txt_cmd, 
-                f"Step 4: Running array_2_txt.py (extracting all arrays)"
+                f"Step 4: Running array_2_txt.py (extracting all arrays with prefix: {prefix})"
             )
             
             if not success:
                 print(f"Warning: array_2_txt.py failed", file=sys.stderr)
             else:
                 print(f"\n✓ array_2_txt.py output in: {src_dir}")
-                print(f"  - input.txt")
-                print(f"  - golden_output.txt")
-                print(f"  - weights.txt")
-                print(f"  - cmd_data.txt")
+                print(f"  - {prefix}_input.txt")
+                print(f"  - {prefix}_golden_output.txt")
+                print(f"  - {prefix}_weights.txt")
+                print(f"  - {prefix}_cmd_data.txt")
     else:
         print(f"\n⏭ Skipping array_2_txt.py step")
     
@@ -439,10 +440,10 @@ Examples:
         print(f"  - {c_arrays_file}")
     
     if not args.skip_array_to_txt:
-        print(f"  - src/input.txt")
-        print(f"  - src/golden_output.txt")
-        print(f"  - src/weights.txt")
-        print(f"  - src/cmd_data.txt")
+        print(f"  - src/{prefix}_input.txt")
+        print(f"  - src/{prefix}_golden_output.txt")
+        print(f"  - src/{prefix}_weights.txt")
+        print(f"  - src/{prefix}_cmd_data.txt")
     
     if not args.skip_vela:
         print(f"  - {model_name}_vela.npz")
