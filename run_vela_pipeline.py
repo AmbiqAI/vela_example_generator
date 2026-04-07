@@ -234,7 +234,7 @@ Examples:
             '--config', str(vela_config_path),
             '--system-config', args.system_config,
             '--memory-mode', args.memory_mode,
-            '--output', str(vela_output_npz)
+            '--output-dir', str(output_dir)
         ]
         
         if args.vela_verbose:
