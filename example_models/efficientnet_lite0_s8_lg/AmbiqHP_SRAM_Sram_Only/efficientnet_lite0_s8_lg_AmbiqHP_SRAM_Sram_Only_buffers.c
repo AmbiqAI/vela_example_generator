@@ -1,0 +1,29 @@
+/*
+ * Auto-generated from: efficientnet_lite0_s8_lg_vela.npz
+ * Do not edit by hand.
+ *
+ * Generated for Ethos-U direct driver invocation (no TFLM).
+ * Assumes a single NPU command stream with no CPU fallback.
+ */
+#include <stddef.h>
+#include <stdint.h>
+#include "efficientnet_lite0_s8_lg_AmbiqHP_SRAM_Sram_Only_weights.h"
+#include "efficientnet_lite0_s8_lg_AmbiqHP_SRAM_Sram_Only_meta.h"
+
+__attribute__((aligned(32))) static uint8_t efficientnet_lite0_s8_lg_AmbiqHP_SRAM_Sram_Only_region_1[1505280] = {0};
+
+uint8_t* get_region_base_ptr(int region) {
+    switch(region) {
+    case 1: return efficientnet_lite0_s8_lg_AmbiqHP_SRAM_Sram_Only_region_1;
+    case 0: return (uint8_t*)efficientnet_lite0_s8_lg_AmbiqHP_SRAM_Sram_Only_weights; // weights region
+    default: return (uint8_t*)0; // unused region
+    }
+}
+
+size_t get_region_size(int region) {
+    switch(region) {
+    case 1: return sizeof(efficientnet_lite0_s8_lg_AmbiqHP_SRAM_Sram_Only_region_1);
+    case 0: return efficientnet_lite0_s8_lg_AmbiqHP_SRAM_Sram_Only_weights_size;
+    default: return 0;
+    }
+}

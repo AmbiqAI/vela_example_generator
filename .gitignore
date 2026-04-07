@@ -1,0 +1,13 @@
+# Vela intermediate binary outputs (regenerable via run_matrix.py)
+example_models/**/*_vela.npz
+
+# Weight C-array headers for matrix outputs – the raw weight data is large
+# (up to 90 MB per configuration) and is regenerable via run_matrix.py.
+# Only the config-specific command-stream files are tracked in git.
+example_models/**/*_weights.h
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
