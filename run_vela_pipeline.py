@@ -453,7 +453,7 @@ Examples:
     tflite_dest = output_dir / tflite_path.name
     if tflite_path.resolve() != tflite_dest.resolve():
         shutil.copy2(tflite_path, tflite_dest)
-    print(f"  - {tflite_path.name}  (source TFLite model)")
+        print(f"  - {tflite_path.name}  (source TFLite model)")
     
     print()
 

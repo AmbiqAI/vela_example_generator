@@ -115,7 +115,7 @@ def run_tflite_inference(tflite_path, output_path=None, prefix=None):
 
     # Determine symbol prefix: explicit prefix takes priority, else derive from stem
     model_name = tflite_path.stem.replace('-', '_').replace('.', '_')
-    sym_prefix = prefix.replace('-', '_').replace('.', '_') if prefix else model_name
+    sym_prefix = prefix.replace('-', '_').replace('.', '_') if prefix is not None else model_name
 
     c_content = f"""/*
  * Generated C arrays for TFLite model: {tflite_path.name}
