@@ -338,7 +338,7 @@ Examples:
             sys.exit(1)
         
         if args.c_arrays_output is None:
-            c_arrays_output = output_dir / f"{model_name}_data.h"
+            c_arrays_output = output_dir / f"{prefix}_data.h"
         else:
             c_arrays_output = Path(args.c_arrays_output)
             if not c_arrays_output.is_absolute():
@@ -348,7 +348,8 @@ Examples:
             sys.executable,
             str(generate_c_arrays_script),
             str(tflite_path),
-            '-o', str(c_arrays_output)
+            '-o', str(c_arrays_output),
+            '--prefix', prefix
         ]
         
         success = run_command(generate_cmd, f"Step 3: Running generate_c_arrays.py")
@@ -436,7 +437,7 @@ Examples:
         print(f"  - {prefix}_run.c")
     
     if not args.skip_c_arrays:
-        c_arrays_file = args.c_arrays_output or f"{model_name}_data.h"
+        c_arrays_file = args.c_arrays_output or f"{prefix}_data.h"
         print(f"  - {c_arrays_file}")
     
     if not args.skip_array_to_txt:
@@ -447,6 +448,12 @@ Examples:
     
     if not args.skip_vela:
         print(f"  - {model_name}_vela.npz")
+    
+    # Copy source TFLite file into output directory
+    tflite_dest = output_dir / tflite_path.name
+    if tflite_path.resolve() != tflite_dest.resolve():
+        shutil.copy2(tflite_path, tflite_dest)
+    print(f"  - {tflite_path.name}  (source TFLite model)")
     
     print()
 

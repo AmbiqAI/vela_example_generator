@@ -73,7 +73,7 @@ def get_c_type_for_dtype(dtype):
         return "uint8_t"  # Default fallback
 
 
-def run_tflite_inference(tflite_path, output_path=None):
+def run_tflite_inference(tflite_path, output_path=None, prefix=None):
     """Run inference on TFLite model and generate C arrays."""
 
     # Load TFLite model
@@ -113,8 +113,9 @@ def run_tflite_inference(tflite_path, output_path=None):
     input_c_type = get_c_type_for_dtype(input_details['dtype'])
     output_c_type = get_c_type_for_dtype(output_details['dtype'])
 
-    # Generate C file content
+    # Determine symbol prefix: explicit prefix takes priority, else derive from stem
     model_name = tflite_path.stem.replace('-', '_').replace('.', '_')
+    sym_prefix = prefix.replace('-', '_').replace('.', '_') if prefix else model_name
 
     c_content = f"""/*
  * Generated C arrays for TFLite model: {tflite_path.name}
@@ -125,35 +126,35 @@ def run_tflite_inference(tflite_path, output_path=None):
  * Output type: {output_details['dtype']}
  */
 
-#ifndef {model_name.upper()}_DATA_H
-#define {model_name.upper()}_DATA_H
+#ifndef {sym_prefix.upper()}_DATA_H
+#define {sym_prefix.upper()}_DATA_H
 
 #include <stdint.h>
 
 /* Input tensor data */
-{array_to_c_format(input_data, f"{model_name}_input", input_c_type)}
+{array_to_c_format(input_data, f"{sym_prefix}_input", input_c_type)}
 
 /* Output tensor data */
-{array_to_c_format(output_data, f"{model_name}_output", output_c_type)}
+{array_to_c_format(output_data, f"{sym_prefix}_output", output_c_type)}
 
 /* Metadata */
-#define {model_name.upper()}_INPUT_SIZE {input_data.size}
-#define {model_name.upper()}_OUTPUT_SIZE {output_data.size}
+#define {sym_prefix.upper()}_INPUT_SIZE {input_data.size}
+#define {sym_prefix.upper()}_OUTPUT_SIZE {output_data.size}
 
-#endif /* {model_name.upper()}_DATA_H */
+#endif /* {sym_prefix.upper()}_DATA_H */
 """
 
     # Determine output file path
     if output_path is None:
-        output_path = tflite_path.parent / f"{model_name}_data.h"
+        output_path = tflite_path.parent / f"{sym_prefix}_data.h"
 
     # Write to file
     with open(output_path, 'w') as f:
         f.write(c_content)
 
     print(f"\n✓ Generated C header file: {output_path}")
-    print(f"  Input array: {model_name}_input[{input_data.size}]")
-    print(f"  Output array: {model_name}_output[{output_data.size}]")
+    print(f"  Input array: {sym_prefix}_input[{input_data.size}]")
+    print(f"  Output array: {sym_prefix}_output[{output_data.size}]")
 
     return output_path
 
@@ -171,7 +172,13 @@ def main():
         '-o', '--output',
         type=str,
         default=None,
-        help='Output C header file path (default: <model_name>_data.h)'
+        help='Output C header file path (default: <prefix>_data.h)'
+    )
+    parser.add_argument(
+        '--prefix',
+        type=str,
+        default=None,
+        help='Symbol prefix for generated arrays and header guards (default: <model_name>)'
     )
 
     args = parser.parse_args()
@@ -183,7 +190,7 @@ def main():
         sys.exit(1)
 
     try:
-        run_tflite_inference(tflite_path, args.output)
+        run_tflite_inference(tflite_path, args.output, args.prefix)
     except Exception as e:
         print(f"\nError processing model: {e}", file=sys.stderr)
         import traceback
