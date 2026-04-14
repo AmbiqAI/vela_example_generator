@@ -16,13 +16,24 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 
+ARRAY_NAME_PATTERN = r"[A-Za-z0-9_.]+"
+ARRAY_DECL_PATTERN = (
+    rf"(?:__attribute__\s*\(\([^)]*\)\)\s*)*"
+    rf"(?:static\s+)?const\s+[A-Za-z_]\w*\s+"
+    rf"({ARRAY_NAME_PATTERN})\s*\[[^\]]*\]\s*=\s*\{{"
+)
+
 
 def extract_array_from_content(content: str, array_name: str) -> Optional[List[int]]:
     """Extract array values from C file content."""
     # Regex pattern to find the array content inside braces { ... }
     # Handles: const type array_name[size] = { ... };
     # Also handles: static const type array_name[size] = { ... };
-    pattern = rf"(?:static\s+)?const\s+\w+\s+{re.escape(array_name)}\s*\[[^\]]*\]\s*=\s*\{{([^}}]+)\}}"
+    pattern = (
+        rf"(?:__attribute__\s*\(\([^)]*\)\)\s*)*"
+        rf"(?:static\s+)?const\s+[A-Za-z_]\w*\s+"
+        rf"{re.escape(array_name)}\s*\[[^\]]*\]\s*=\s*\{{([^}}]+)\}}"
+    )
     match = re.search(pattern, content, re.DOTALL)
     
     if not match:
@@ -64,8 +75,7 @@ def find_arrays_in_file(file_path: Path) -> Dict[str, List[int]]:
     
     # Find all array declarations
     # Pattern: (static)? const type name[size] = { ... };
-    array_pattern = r"(?:static\s+)?const\s+\w+\s+(\w+)\s*\[[^\]]*\]\s*=\s*\{"
-    matches = re.finditer(array_pattern, content, re.MULTILINE)
+    matches = re.finditer(ARRAY_DECL_PATTERN, content, re.MULTILINE)
     
     for match in matches:
         array_name = match.group(1)
