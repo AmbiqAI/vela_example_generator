@@ -10,13 +10,11 @@
 #include "mobilenet_v2_1.0_224_INT8_weights.h"
 #include "mobilenet_v2_1.0_224_INT8_meta.h"
 
-__attribute__((aligned(32))) static uint8_t mobilenet_v2_1.0_224_INT8_region_1[652288] = {0};
-__attribute__((aligned(32))) static uint8_t mobilenet_v2_1.0_224_INT8_region_2[250304] = {0};
+__attribute__((aligned(32))) static uint8_t mobilenet_v2_1.0_224_INT8_region_1[1003520] = {0};
 
 uint8_t* get_region_base_ptr(int region) {
     switch(region) {
     case 1: return mobilenet_v2_1.0_224_INT8_region_1;
-    case 2: return mobilenet_v2_1.0_224_INT8_region_2;
     case 0: return (uint8_t*)mobilenet_v2_1.0_224_INT8_weights; // weights region
     default: return (uint8_t*)0; // unused region
     }
@@ -25,7 +23,6 @@ uint8_t* get_region_base_ptr(int region) {
 size_t get_region_size(int region) {
     switch(region) {
     case 1: return sizeof(mobilenet_v2_1.0_224_INT8_region_1);
-    case 2: return sizeof(mobilenet_v2_1.0_224_INT8_region_2);
     case 0: return mobilenet_v2_1.0_224_INT8_weights_size;
     default: return 0;
     }
