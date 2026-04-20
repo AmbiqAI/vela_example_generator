@@ -644,7 +644,7 @@ int ethosu_wait(struct ethosu_driver *drv, bool block)
         {
             if (drv->job.result == ETHOSU_JOB_RESULT_ERROR)
             {
-                LOG_ERR("NPU error(s) occured during inference.");
+                LOG_ERR("NPU err(s) occured during inference.");
                 ethosu_dev_print_err_status(&drv->dev);
             }
             else
