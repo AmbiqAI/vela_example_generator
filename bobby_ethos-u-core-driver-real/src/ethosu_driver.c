@@ -708,11 +708,28 @@ int ethosu_invoke_async(struct ethosu_driver *drv,
     drv->job.num_base_addr    = num_base_addr;
     drv->job.user_arg         = user_arg;
 
-    // First word in custom_data_ptr should contain "Custom Operator Payload 1"
-    if (data_ptr->word != ETHOSU_FOURCC)
+    // Validate payload magic as bytes to avoid unaligned word access issues.
+    if (custom_data_size < BYTES_IN_32_BITS)
     {
-        LOG_ERR("Custom Operator Payload: %x is not correct, expected %x", data_ptr->word, ETHOSU_FOURCC);
+        LOG_ERR("custom_data_size=%d too small, expected at least %d", custom_data_size, BYTES_IN_32_BITS);
         goto err;
+    }
+
+    {
+        const uint8_t *magic = (const uint8_t *)custom_data_ptr;
+        if (!(magic[0] == 'C' && magic[1] == 'O' && magic[2] == 'P' && magic[3] == '1'))
+        {
+            LOG_ERR("Custom Operator Payload magic mismatch: got [%02x %02x %02x %02x], expected [%02x %02x %02x %02x]",
+                    magic[0],
+                    magic[1],
+                    magic[2],
+                    magic[3],
+                    'C',
+                    'O',
+                    'P',
+                    '1');
+            goto err;
+        }
     }
 
     // Custom data length must be a multiple of 32 bits
