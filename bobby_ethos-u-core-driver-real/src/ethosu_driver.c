@@ -91,9 +91,11 @@ void ethosu_semaphore_destroy(void *sem)
 
 int ethosu_semaphore_take(void *sem, uint64_t timeout)
 {
+    LOG_INFO("NPU driver handle ccc count %d\n", ((struct ethosu_semaphore_t *)sem)->count);
     (void)timeout;  // keep signature; implement if you need timeouts
     struct ethosu_semaphore_t *s = (struct ethosu_semaphore_t *)sem;
     while (s->count == 0) {
+        LOG_INFO("NPU driver handle aaa count %d\n", s->count);
         __WFE();
     }
     s->count--;
@@ -104,6 +106,7 @@ int ethosu_semaphore_give(void *sem)
 {
     struct ethosu_semaphore_t *s = (struct ethosu_semaphore_t *)sem;
     s->count++;
+    LOG_INFO("NPU driver handle bbb count %d\n", s->count);
     __SEV();
     return 0;
 }
@@ -613,7 +616,12 @@ int ethosu_wait(struct ethosu_driver *drv, bool block)
     case ETHOSU_JOB_DONE:
         // Wait for interrupt in blocking mode. In non-blocking mode
         // the interrupt has already triggered
+        LOG_DEBUG("Inference finished successfully111...");
+        LOG_DEBUG("Inference finished successfully222...");
+        LOG_INFO("NPU driver handle eee count %d\n", ((struct ethosu_semaphore_t *)(drv->semaphore))->count);
         ret = ethosu_semaphore_take(drv->semaphore, ETHOSU_SEMAPHORE_WAIT_INFERENCE);
+        LOG_DEBUG("Inference finished successfully333...");
+        LOG_DEBUG("Inference finished successfully444...");
         if (ret < 0)
         {
             drv->job.result = ETHOSU_JOB_RESULT_TIMEOUT;
@@ -708,10 +716,26 @@ int ethosu_invoke_async(struct ethosu_driver *drv,
     drv->job.num_base_addr    = num_base_addr;
     drv->job.user_arg         = user_arg;
 
-    // First word in custom_data_ptr should contain "Custom Operator Payload 1"
-    if (data_ptr->word != ETHOSU_FOURCC)
+    // Validate payload magic as bytes to avoid unaligned word access issues.
+    if (custom_data_size < BYTES_IN_32_BITS)
     {
-        LOG_ERR("Custom Operator Payload: %x is not correct, expected %x", data_ptr->word, ETHOSU_FOURCC);
+        LOG_ERR("custom_data_size=%d too small, expected at least %d", custom_data_size, BYTES_IN_32_BITS);
+        goto err;
+    }
+    
+    // First word in custom_data_ptr should contain "Custom Operator Payload 1"
+    const volatile uint8_t *magic = (const volatile uint8_t *)custom_data_ptr;
+    if (!(magic[0] == 'C' && magic[1] == 'O' && magic[2] == 'P' && magic[3] == '1'))
+    {
+        LOG_ERR("Custom Operator Payload magic mismatch: got [%02x %02x %02x %02x], expected [%02x %02x %02x %02x]",
+                magic[0],
+                magic[1],
+                magic[2],
+                magic[3],
+                'C',
+                'O',
+                'P',
+                '1');
         goto err;
     }
 
