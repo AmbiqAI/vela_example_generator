@@ -32,6 +32,25 @@ def generate_random_input(input_details):
         raise ValueError(f"Unsupported input dtype: {dtype}")
 
 
+def load_input_npy(input_npy_path, input_details):
+    """Load an input tensor from .npy and validate it against the model input."""
+    input_data = np.load(input_npy_path, allow_pickle=False)
+    expected_shape = tuple(input_details['shape'])
+    expected_dtype = input_details['dtype']
+
+    if tuple(input_data.shape) != expected_shape:
+        raise ValueError(
+            f"Input NPY shape mismatch: expected {expected_shape}, got {tuple(input_data.shape)}"
+        )
+
+    if input_data.dtype != expected_dtype:
+        raise ValueError(
+            f"Input NPY dtype mismatch: expected {expected_dtype}, got {input_data.dtype}"
+        )
+
+    return input_data
+
+
 def array_to_c_format(data, name, array_type="uint8_t"):
     """Convert numpy array to C array format."""
     flat_data = data.flatten()
@@ -73,7 +92,7 @@ def get_c_type_for_dtype(dtype):
         return "uint8_t"  # Default fallback
 
 
-def run_tflite_inference(tflite_path, output_path=None):
+def run_tflite_inference(tflite_path, output_path=None, input_npy_path=None, output_npy_path=None):
     """Run inference on TFLite model and generate C arrays."""
 
     # Load TFLite model
@@ -97,9 +116,12 @@ def run_tflite_inference(tflite_path, output_path=None):
     print(f"  Type: {output_details['dtype']}")
     print(f"  Quantization: {output_details['quantization']}")
 
-    # Generate random input
-    input_data = generate_random_input(input_details)
-    print(f"\nGenerated random input with shape: {input_data.shape}")
+    if input_npy_path is not None:
+        input_data = load_input_npy(input_npy_path, input_details)
+        print(f"\nLoaded input from NPY: {input_npy_path}")
+    else:
+        input_data = generate_random_input(input_details)
+        print(f"\nGenerated random input with shape: {input_data.shape}")
 
     # Run inference
     interpreter.set_tensor(input_details['index'], input_data)
@@ -109,6 +131,10 @@ def run_tflite_inference(tflite_path, output_path=None):
     output_data = interpreter.get_tensor(output_details['index'])
     print(f"Output shape: {output_data.shape}")
 
+    if output_npy_path is not None:
+        np.save(output_npy_path, output_data, allow_pickle=False)
+        print(f"Saved output tensor to NPY: {output_npy_path}")
+
     # Determine C types
     input_c_type = get_c_type_for_dtype(input_details['dtype'])
     output_c_type = get_c_type_for_dtype(output_details['dtype'])
@@ -116,11 +142,17 @@ def run_tflite_inference(tflite_path, output_path=None):
     # Generate C file content
     model_name = tflite_path.stem.replace('-', '_').replace('.', '_')
 
+    input_source = input_npy_path.name if input_npy_path is not None else "generated-random"
+    output_source = output_npy_path.name if output_npy_path is not None else "inference-output"
+
     c_content = f"""/*
  * Generated C arrays for TFLite model: {tflite_path.name}
  *
+ * Input file: {input_source}
  * Input shape: {list(input_details['shape'])}
  * Input type: {input_details['dtype']}
+ *
+ * Output file: {output_source}
  * Output shape: {list(output_details['shape'])}
  * Output type: {output_details['dtype']}
  */
@@ -173,6 +205,18 @@ def main():
         default=None,
         help='Output C header file path (default: <model_name>_data.h)'
     )
+    parser.add_argument(
+        '--input-npy',
+        type=str,
+        default=None,
+        help='Optional input tensor .npy file. Must match the model input shape and dtype.'
+    )
+    parser.add_argument(
+        '--output-npy',
+        type=str,
+        default=None,
+        help='Optional output tensor .npy file to write after inference.'
+    )
 
     args = parser.parse_args()
 
@@ -182,8 +226,15 @@ def main():
         print(f"Error: TFLite file not found: {tflite_path}", file=sys.stderr)
         sys.exit(1)
 
+    input_npy_path = Path(args.input_npy) if args.input_npy is not None else None
+    output_npy_path = Path(args.output_npy) if args.output_npy is not None else None
+
+    if input_npy_path is not None and not input_npy_path.exists():
+        print(f"Error: input NPY file not found: {input_npy_path}", file=sys.stderr)
+        sys.exit(1)
+
     try:
-        run_tflite_inference(tflite_path, args.output)
+        run_tflite_inference(tflite_path, args.output, input_npy_path, output_npy_path)
     except Exception as e:
         print(f"\nError processing model: {e}", file=sys.stderr)
         import traceback
