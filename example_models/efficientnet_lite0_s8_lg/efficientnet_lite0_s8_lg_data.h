@@ -1,9 +1,12 @@
 /*
  * Generated C arrays for TFLite model: efficientnet_lite0_s8_lg.tflite
  *
- * Input shape: [1, 224, 224, 3]
+ * Input file: ifm0.npy
+ * Input shape: [np.int32(1), np.int32(224), np.int32(224), np.int32(3)]
  * Input type: <class 'numpy.uint8'>
- * Output shape: [1, 1000]
+ *
+ * Output file: ofm0.npy
+ * Output shape: [np.int32(1), np.int32(1000)]
  * Output type: <class 'numpy.uint8'>
  */
 

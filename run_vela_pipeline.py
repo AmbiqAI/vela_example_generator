@@ -13,6 +13,17 @@ from pathlib import Path
 import shutil
 
 
+def resolve_optional_path(base_dir, provided_path):
+    """Resolve an optional path relative to the repo root."""
+    if provided_path is None:
+        return None
+
+    path = Path(provided_path)
+    if not path.is_absolute():
+        path = base_dir / path
+    return path
+
+
 def run_command(cmd, description, check=True):
     """Run a shell command and print output."""
     print(f"\n{'='*60}")
@@ -133,6 +144,40 @@ Examples:
         default=None,
         help='Output filename for generate_c_arrays.py (default: <model_name>_data.h)'
     )
+
+    parser.add_argument(
+        '--input-npy',
+        type=str,
+        default=None,
+        help='Optional input tensor .npy file to feed into generate_c_arrays.py'
+    )
+
+    parser.add_argument(
+        '--output-npy',
+        type=str,
+        default=None,
+        help='Optional output tensor .npy file to write from generate_c_arrays.py'
+    )
+
+    parser.add_argument(
+        '--source-output-npy',
+        type=str,
+        default=None,
+        help='Optional output tensor .npy file to use as the golden output array'
+    )
+
+    parser.add_argument(
+        '--expected-output-npy',
+        type=str,
+        default=None,
+        help='Optional expected output tensor .npy file to verify against generate_c_arrays.py output'
+    )
+
+    parser.add_argument(
+        '--use-model-sidecar-npy',
+        action='store_true',
+        help='Use sibling ifm0.npy/ofm0.npy next to the model when present'
+    )
     
     # Tool paths
     parser.add_argument(
@@ -219,6 +264,39 @@ Examples:
     print(f"System config: {args.system_config}")
     print(f"Memory mode:   {args.memory_mode}")
     print(f"Vela config:   {args.vela_config}")
+
+    input_npy_path = resolve_optional_path(script_dir, args.input_npy)
+    output_npy_path = resolve_optional_path(script_dir, args.output_npy)
+    source_output_npy_path = resolve_optional_path(script_dir, args.source_output_npy)
+    expected_output_npy_path = resolve_optional_path(script_dir, args.expected_output_npy)
+
+    if args.use_model_sidecar_npy:
+        if input_npy_path is None:
+            candidate_input_npy = tflite_path.parent / 'ifm0.npy'
+            if candidate_input_npy.exists():
+                input_npy_path = candidate_input_npy
+        if source_output_npy_path is None:
+            candidate_output_npy = tflite_path.parent / 'ofm0.npy'
+            if candidate_output_npy.exists():
+                source_output_npy_path = candidate_output_npy
+
+    for label, optional_path in (
+        ('input NPY', input_npy_path),
+        ('source output NPY', source_output_npy_path),
+        ('expected output NPY', expected_output_npy_path),
+    ):
+        if optional_path is not None and not optional_path.exists():
+            print(f"Error: {label} file not found: {optional_path}", file=sys.stderr)
+            sys.exit(1)
+
+    if input_npy_path is not None:
+        print(f"Input NPY:     {input_npy_path}")
+    if source_output_npy_path is not None:
+        print(f"Golden OFM:    {source_output_npy_path}")
+    if expected_output_npy_path is not None:
+        print(f"Expected OFM:  {expected_output_npy_path}")
+    if output_npy_path is not None:
+        print(f"Output NPY:    {output_npy_path}")
     
     # Determine prefix
     model_name = tflite_path.stem
@@ -350,6 +428,15 @@ Examples:
             str(tflite_path),
             '-o', str(c_arrays_output)
         ]
+
+        if input_npy_path is not None:
+            generate_cmd.extend(['--input-npy', str(input_npy_path)])
+        if output_npy_path is not None:
+            generate_cmd.extend(['--output-npy', str(output_npy_path)])
+        if source_output_npy_path is not None:
+            generate_cmd.extend(['--source-output-npy', str(source_output_npy_path)])
+        if expected_output_npy_path is not None:
+            generate_cmd.extend(['--expected-output-npy', str(expected_output_npy_path)])
         
         success = run_command(generate_cmd, f"Step 3: Running generate_c_arrays.py")
         

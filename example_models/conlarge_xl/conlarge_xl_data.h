@@ -1,9 +1,12 @@
 /*
  * Generated C arrays for TFLite model: conlarge_xl.tflite
  *
- * Input shape: [1, 300, 80]
+ * Input file: ifm0.npy
+ * Input shape: [np.int32(1), np.int32(300), np.int32(80)]
  * Input type: <class 'numpy.int16'>
- * Output shape: [1, 75, 1025]
+ *
+ * Output file: ofm0.npy
+ * Output shape: [np.int32(1), np.int32(75), np.int32(1025)]
  * Output type: <class 'numpy.int16'>
  */
 
