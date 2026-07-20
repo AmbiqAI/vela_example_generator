@@ -7,6 +7,7 @@ with all outputs stored in the same directory.
 """
 
 import argparse
+import importlib.util
 import subprocess
 import sys
 from pathlib import Path
@@ -22,6 +23,13 @@ def resolve_optional_path(base_dir, provided_path):
     if not path.is_absolute():
         path = base_dir / path
     return path
+
+
+def resolve_vela_command(vela_cmd):
+    """Resolve the Vela invocation for the active Python environment."""
+    if vela_cmd == 'vela' and importlib.util.find_spec('ethosu.vela.vela') is not None:
+        return [sys.executable, '-m', 'ethosu.vela']
+    return [vela_cmd]
 
 
 def run_command(cmd, description, check=True):
@@ -321,8 +329,7 @@ Examples:
         
         # Vela will create a file with pattern: <input_name>_vela.npz
         # We'll use output-dir and then check/rename if needed
-        vela_cmd = [
-            args.vela_cmd,
+        vela_cmd = resolve_vela_command(args.vela_cmd) + [
             '--accelerator-config', args.accelerator_config,
             str(tflite_path),
             '--output-format', 'raw',
