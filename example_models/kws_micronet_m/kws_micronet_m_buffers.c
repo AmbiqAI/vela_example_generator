@@ -11,7 +11,7 @@
 #include "kws_micronet_m_meta.h"
 
 __attribute__((aligned(32))) static uint8_t kws_micronet_m_region_1[496] = {0};
-__attribute__((aligned(32))) static uint8_t kws_micronet_m_region_2[111088] = {0};
+__attribute__((aligned(32))) static uint8_t kws_micronet_m_region_2[187264] = {0};
 
 uint8_t* get_region_base_ptr(int region) {
     switch(region) {
