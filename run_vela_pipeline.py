@@ -27,8 +27,12 @@ def resolve_optional_path(base_dir, provided_path):
 
 def resolve_vela_command(vela_cmd):
     """Resolve the Vela invocation for the active Python environment."""
-    if vela_cmd == 'vela' and importlib.util.find_spec('ethosu.vela.vela') is not None:
-        return [sys.executable, '-m', 'ethosu.vela']
+    if vela_cmd == 'vela':
+        try:
+            if importlib.util.find_spec('ethosu.vela.vela') is not None:
+                return [sys.executable, '-m', 'ethosu.vela']
+        except ModuleNotFoundError:
+            pass
     return [vela_cmd]
 
 
