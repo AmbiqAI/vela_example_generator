@@ -10,7 +10,7 @@
 #include "efficientnet_lite0_s8_lg_weights.h"
 #include "efficientnet_lite0_s8_lg_meta.h"
 
-__attribute__((aligned(32))) static uint8_t efficientnet_lite0_s8_lg_region_1[702464] = {0};
+__attribute__((aligned(32))) static uint8_t efficientnet_lite0_s8_lg_region_1[802816] = {0};
 __attribute__((aligned(32))) static uint8_t efficientnet_lite0_s8_lg_region_2[1034480] = {0};
 
 uint8_t* get_region_base_ptr(int region) {
