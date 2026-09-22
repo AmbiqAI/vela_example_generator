@@ -37,4 +37,20 @@ vela --accelerator-config ethos-u85-256 example_models/kws_micronet_m/kws_micron
 vela --accelerator-config ethos-u85-256 example_models/resnet_v1_8_32_tfs_int8/resnet_v1_8_32_tfs_int8.tflite --config example_models5.2/at110_vela.ini --system-config atomiq110_HP --memory-mode Dedicated_Sram_256KB --output-dir <out>   # D
 ```
 
+## Bare-metal C package (variant D)
+
+`kws_micronet_m/` and `resnet_v1_8_32_tfs_int8/` also carry the direct-driver integration package for variant **D** (at110_vela.ini,
+atomiq110_HP, Dedicated_Sram_256KB), generated with `run_vela_pipeline.py` and Vela 5.2.0, using the same file names and C symbols as
+`example_models/<model>/`: `<model>_vela.npz` (Vela raw output), `<model>_cmd_data.h`, `<model>_weights.h`, `<model>_meta.h`,
+`<model>_buffers.{h,c}`, `<model>_run.c`, `<model>_data.h` (reference input/output arrays), `<model>_summary_atomiq110_HP.csv` and
+`src/*.txt` dumps. The npz command stream and weights are byte-identical to `D_<model>_vela.tflite`. Reference inputs are the same as in
+`example_models/` (kws: sibling `ifm0.npy`/`ofm0.npy`; resnet: `ifm0.npy` rebuilt from the example's `src/*_input.txt`, uint8 1x32x32x3),
+and the golden outputs match the 4.5.0 examples value for value.
+
+```
+python3 run_vela_pipeline.py example_models/<model>/<model>.tflite --output-dir example_models5.2/<model> \
+    --vela-config example_models5.2/at110_vela.ini --system-config atomiq110_HP --memory-mode Dedicated_Sram_256KB \
+    --use-model-sidecar-npy            # kws;  resnet: --input-npy example_models5.2/resnet_v1_8_32_tfs_int8/ifm0.npy
+```
+
 Measured on the Atomiq110 FPGA (NPU ulp/hp, AXI stall and per-port beat counters): see the compile-recipe report in the u85-npu-utilization project.
