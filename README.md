@@ -230,16 +230,18 @@ input/golden text dumps are the same reference data as before.
 | mobilenet_v2_DSRAM1MB | AmbiqHP_HBLRAM | Dedicated_Sram_1MB | existing `_data.h` kept (source tflite restored from history) |
 | npu_wakeword (p1_lin_12k_s1_pool) | AmbiqHP_SRAM | Sram_Only | existing `_data.h` kept (see `kws_model_io_package/`) |
 | resnet_v1_8_32_tfs_int8 | AmbiqHP_SRAM | Dedicated_Sram_256KB | `example_models5.2/.../D_bare_metal/ifm0.npy` (from the example's input.txt) |
-| rnnoise_INT8 | AmbiqHP_SRAM | Shared_Sram_256KB | existing multi-input `_data.h` kept |
+| rnnoise_INT8 | AmbiqHP_SRAM | Dedicated_Sram_256KB | existing multi-input `_data.h` kept |
 | wave2letter (wav2letter_pruned_int8) | AmbiqHP_HBLRAM | Dedicated_Sram_1MB | sidecar ifm0/ofm0.npy |
 
 The memory modes were chosen so that, with the LP system configs, each example reproduced its previous Vela 4.5.0 command
 stream byte for byte; the system configs were then switched to the HP sections. Why some modes differ from the labels in the previous summary CSVs: the `[Memory_Mode.*]` definitions in
 `config/ambiq_final.ini` were remapped in July/August 2026. For ad_medium, efficientnet, kws, mobilenet, npu_wakeword and
 resnet the mode listed above is the one that reproduces the previous Vela 4.5.0 command stream byte for byte with the current
-ini, so each example keeps its original memory placement (the stream itself now differs because of the HP timing). rnnoise, wave2letter and conlarge_xl could not be reproduced
+ini, so each example keeps its original memory placement (the stream itself now differs because of the HP timing). wave2letter and conlarge_xl could not be reproduced
 byte-exactly by any ini/mode combination (their weights match, only the command stream differs), so they use the settings
-recorded in their previous summary CSVs. The Vela 4.5.0 artifacts remain in git history (last at commit a89d100).
+recorded in their previous summary CSVs. rnnoise was previously built with Shared_Sram_256KB (arena in SRAM) and now uses
+Dedicated_Sram_256KB so that the four small models share one recipe (constants and arena on Axi1, 256 KB cache on Axi0).
+The Vela 4.5.0 artifacts remain in git history (last at commit a89d100).
 `example_models5.2/` additionally holds the kws/resnet compile-recipe variants used for the Atomiq110 FPGA measurements.
 
 ## Repository Layout
