@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version >= '3.13'",
@@ -113,32 +113,32 @@ wheels = [
 
 [[package]]
 name = "ethos-u-vela"
-version = "4.5.0"
+version = "5.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "flatbuffers" },
     { name = "numpy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/14/af/dc25845afa9459c043c2098de49ec9b4d40c60e5f464069ceef2ce21de1e/ethos_u_vela-4.5.0.tar.gz", hash = "sha256:efea0cd618c23c42d6580ceef41e722eff6da5c45a99d4df153b936a703f09cd", size = 2307433, upload-time = "2025-12-02T14:15:28.147Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/20/37/81c1818330c37ba161b0d94d51f85328661358bdab613851f76cc564e7e1/ethos_u_vela-5.2.0.tar.gz", hash = "sha256:d1228738674913ed866a136a6002f93a4b7248b23402fa5b52caa8cfef138eaa", size = 2475422, upload-time = "2026-09-03T07:12:37.32Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a5/f8/7f30e13daa564da9223470af39e00ac09cd2f02b89cd087a22e658d8237c/ethos_u_vela-4.5.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:747796d188b898c2c525c4cf8d6c20dd0206d8983e891e1e950f51cbb9f95f4c", size = 1767130, upload-time = "2025-12-02T14:15:00.999Z" },
-    { url = "https://files.pythonhosted.org/packages/4b/4a/364271ca80ed073cd03d5b437bb3188d445d29bca17f5faefca6c5953d2f/ethos_u_vela-4.5.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:77b3195c4e2919d40509cde7b17fefe107da05e4c0d0274974ff15662a1ae45d", size = 1815347, upload-time = "2025-12-02T14:15:02.253Z" },
-    { url = "https://files.pythonhosted.org/packages/95/10/430b876b1c6d43c579e9f85a1a3a72d2a255e876ebdf8fe77ff4679faf9d/ethos_u_vela-4.5.0-cp311-cp311-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b57d0408832c607b9ed7dd213c4a5635d4d1671152e39abde277f8825704c735", size = 1994787, upload-time = "2025-12-02T14:15:03.697Z" },
-    { url = "https://files.pythonhosted.org/packages/63/c3/5b2b7a326dbcbb067246024172c5c729c81907ec7c8828bc1652b7977c70/ethos_u_vela-4.5.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b8e3dff89b40dbbd7a4fc7ed0ba93c68854f6f7544e2d0235db56f9343ea25a0", size = 1931707, upload-time = "2025-12-02T14:15:06.522Z" },
-    { url = "https://files.pythonhosted.org/packages/d2/41/829112158c940bb51b5922afeee283a38569ffed70fc71dbb96943d247f9/ethos_u_vela-4.5.0-cp311-cp311-win32.whl", hash = "sha256:c0060c3499a55ea10ee09a494f3f800673b232f808c9640f8706f9729c7e0dc5", size = 1461740, upload-time = "2025-12-02T14:15:08.182Z" },
-    { url = "https://files.pythonhosted.org/packages/05/c4/d85a8b8f3926c8a530e3bd54a50603f10e3dacf98c19ed7e2127a9a71e4c/ethos_u_vela-4.5.0-cp311-cp311-win_amd64.whl", hash = "sha256:1b7babe9908701470ab1ee81cd49600d973f7d512693889c47d64cc8422b23c3", size = 1625058, upload-time = "2025-12-02T14:15:09.734Z" },
-    { url = "https://files.pythonhosted.org/packages/23/22/8aa1f0b3b642854ea1d5a3af6c06c7df29ec7af6abf5346c43bfa4ad3a8a/ethos_u_vela-4.5.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:c4675de54c6b14da0372d0d012bc7a5a7618a3161d6ab82c8f40494d852e3e06", size = 1767709, upload-time = "2025-12-02T14:15:11.001Z" },
-    { url = "https://files.pythonhosted.org/packages/1d/af/93d33554929ccaf1e5f0fb67d79f57fb7db470f394d3a5a74dc18e70583b/ethos_u_vela-4.5.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d08eacb3bae725d206a7d1762bab98230d0b73f3170ec628acba5c3ec0c3f2bc", size = 1815079, upload-time = "2025-12-02T14:15:12.715Z" },
-    { url = "https://files.pythonhosted.org/packages/0e/d3/121f7c24535cccb0753fd065826e1c54d634ccd7975bc11471b5d3141190/ethos_u_vela-4.5.0-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:c19286ca0bcee14534de299a121285a1b8373e882ecb0de0eb1e63a01add8638", size = 1996204, upload-time = "2025-12-02T14:15:14.281Z" },
-    { url = "https://files.pythonhosted.org/packages/3f/13/4db5422b31595a2bb189ca25a059d76284a3f1e10dfe35a4e48f3ea374c7/ethos_u_vela-4.5.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2c63475dda54d0104385fbe6053ac21db5f5805c3cb696527b07a4b4f39b5d95", size = 1931807, upload-time = "2025-12-02T14:15:15.654Z" },
-    { url = "https://files.pythonhosted.org/packages/cf/55/d399d0e2e65bb7e1508adfcbae61b8c432333ac4a4e9a59590ef9e955ecb/ethos_u_vela-4.5.0-cp312-cp312-win32.whl", hash = "sha256:26625839faecb36c4f7079b546491b533bcba85901b772cbb27a69fa230c75a4", size = 1461576, upload-time = "2025-12-02T14:15:16.922Z" },
-    { url = "https://files.pythonhosted.org/packages/5a/0c/1f9f63a5b60e06467bce2104bc5c8abf98842b7c7a4d79f2436e5d4c2003/ethos_u_vela-4.5.0-cp312-cp312-win_amd64.whl", hash = "sha256:450ec8f1ad3d1b0559ad0a3d859e122564d62952827313bab9fcb556ed63e3d3", size = 1625864, upload-time = "2025-12-02T14:15:18.31Z" },
-    { url = "https://files.pythonhosted.org/packages/29/2b/26fe8704b22384b82e54523d17b290af4f083359f31a254beae7c2d7689e/ethos_u_vela-4.5.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:0a81b0967b9e1797fec3eb702752982a17f349d50c85a58f5299aecaee6f68e5", size = 1767699, upload-time = "2025-12-02T14:15:20.307Z" },
-    { url = "https://files.pythonhosted.org/packages/c7/74/a91b9738c4ce13731266f8dbfe1fe591068f618a61f6a129ff9f55299dd2/ethos_u_vela-4.5.0-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f8718fe38f566e716cd11c9ebf061cc97929df784d1b2ed99cf9daf7c13b9b8c", size = 1816060, upload-time = "2025-12-02T14:15:21.503Z" },
-    { url = "https://files.pythonhosted.org/packages/1d/13/a707f56c2d83d2890ac8c7f6a8e75ff65fd2ed4f29f84166cd6b48b4a1db/ethos_u_vela-4.5.0-cp313-cp313-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:8cfe4dd65053ffd02da2cee147c3a983a2ceea14409c88c65983a18ab956565b", size = 1995805, upload-time = "2025-12-02T14:15:22.756Z" },
-    { url = "https://files.pythonhosted.org/packages/fa/f7/b2465507817bcedee4db69090a81c3b6580be001ab2846e1187b83b3b082/ethos_u_vela-4.5.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:64a485e8340a0a48be7302aaa88a11c40b2843821d6eb02c46f348cb53ab1e7b", size = 1931736, upload-time = "2025-12-02T14:15:24.368Z" },
-    { url = "https://files.pythonhosted.org/packages/9f/89/5e69ce9a351cbf4623188dff30f97cf6828cb1ea28cd533dbf9e65d56b68/ethos_u_vela-4.5.0-cp313-cp313-win32.whl", hash = "sha256:da4551ba889864dcb1242f243350f63cfc8ee3c2d38afecf75f7ebc11d7aee14", size = 1461535, upload-time = "2025-12-02T14:15:25.656Z" },
-    { url = "https://files.pythonhosted.org/packages/78/96/dbec9d3053da5b566cbb50ca3844d562edb16f56101577c6bfa1006419eb/ethos_u_vela-4.5.0-cp313-cp313-win_amd64.whl", hash = "sha256:91172874deb70951029287ee32e633e6e68f668de34ddfd06de4c36a874e4bd1", size = 1625825, upload-time = "2025-12-02T14:15:26.964Z" },
+    { url = "https://files.pythonhosted.org/packages/13/55/8ea86eb1449b68e24f8365292775d49424d0412fad8521d8e70310730139/ethos_u_vela-5.2.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:2b59c441b785bcd38d39d2395fa5a62e74ae7bae31a238c23be105f58442fbd9", size = 1870010, upload-time = "2026-09-03T07:10:52.301Z" },
+    { url = "https://files.pythonhosted.org/packages/73/b4/e1ce707d080c48fe4a86fe34895513342d7a852b1e91fdc7d1b00da5d19a/ethos_u_vela-5.2.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d0d331819e9cf9f3460509ebe45e7493d8ec1aa2e1c947e4b9eb86df12672a95", size = 1923344, upload-time = "2026-09-03T07:11:01.154Z" },
+    { url = "https://files.pythonhosted.org/packages/9b/90/5c478d31a1f6a57b314bb7e960ca95fe07cd5bc428702a7d7576d543aedd/ethos_u_vela-5.2.0-cp311-cp311-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:8bf5eac668f0e99e5372959bff8b2aca00cd94aded86e84319e5f9216f8c8b66", size = 2124424, upload-time = "2026-09-03T07:11:05.291Z" },
+    { url = "https://files.pythonhosted.org/packages/7d/37/abca9e21090a8b4ce2b068df471d9cb7b85d3f67eda99816aa76b8b6f05f/ethos_u_vela-5.2.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a12db89e014ad0d19f1a5156ec1ba45e0d0f30d3428f4ca8abea88e3d64a0ad2", size = 2039118, upload-time = "2026-09-03T07:11:12.629Z" },
+    { url = "https://files.pythonhosted.org/packages/f8/f1/77450b71931ed6a983506b8cda2a0fd2cf424d527e9025b47dd8808e2faa/ethos_u_vela-5.2.0-cp311-cp311-win32.whl", hash = "sha256:a27f42caeae641aaba48266d261cdb690eda001076978192a48b4b205dcddf99", size = 1541378, upload-time = "2026-09-03T07:11:18.395Z" },
+    { url = "https://files.pythonhosted.org/packages/d0/e8/f268cdc0c804a7bab871d3fc4a4033281dcad486a521ba862d321276c9a3/ethos_u_vela-5.2.0-cp311-cp311-win_amd64.whl", hash = "sha256:0e597a5bf396aa8368b7ebbf7aafca5848b6760361375d94dd92b1aff3ec4d68", size = 1712811, upload-time = "2026-09-03T07:11:23.715Z" },
+    { url = "https://files.pythonhosted.org/packages/f2/26/18716390fd4092d9d05b291a3da26b74c090e791fdb98776ad3e94d24275/ethos_u_vela-5.2.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:41f85b5b4ab3e5f00c5d31b2be1452acb6c899f979f21555f5263d7ee040fb07", size = 1871223, upload-time = "2026-09-03T07:11:31.407Z" },
+    { url = "https://files.pythonhosted.org/packages/40/1e/ee4f05a4a1d26bd70c7ba4e83ff76100ab2940c68aa76627312f171b4b38/ethos_u_vela-5.2.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:317928cc8421ef6ca58c62210b545f4c6eff0d08d73c6fdf42aaa83604d707e2", size = 1925263, upload-time = "2026-09-03T07:11:38.784Z" },
+    { url = "https://files.pythonhosted.org/packages/64/ed/103c81b917fe9f838ad40c58bc35a414e0d73dabbdb443227ee0df435680/ethos_u_vela-5.2.0-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b27fcd36decff09fccafd456805ce397526f8df0031b934206caaa3a21824fd6", size = 2125546, upload-time = "2026-09-03T07:11:43.855Z" },
+    { url = "https://files.pythonhosted.org/packages/f1/7b/546045504270b4f7ded3df06ef3759a6aef688e5cd0f6beb03d778146cc7/ethos_u_vela-5.2.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:24be89efcb10f1711ea10b25246e7ce97d487716eb80bcc69f9b182c1298153c", size = 2040980, upload-time = "2026-09-03T07:11:46.907Z" },
+    { url = "https://files.pythonhosted.org/packages/b3/64/5c63c01f42908555d6d822d9eedb37366e62156912d2b4d52c9bfa73a64a/ethos_u_vela-5.2.0-cp312-cp312-win32.whl", hash = "sha256:364794f46575565494f4316154b98a2469131272890218646cb749a88dc7e4fd", size = 1541921, upload-time = "2026-09-03T07:11:49.708Z" },
+    { url = "https://files.pythonhosted.org/packages/34/39/8acf06876fc4a3aa1cc08a9c8c4094399353a35d3d14ca0cb31449c30006/ethos_u_vela-5.2.0-cp312-cp312-win_amd64.whl", hash = "sha256:83a176d410121be0efb0cb542e1f81556610a46af075fa54a0847a4326d52760", size = 1713303, upload-time = "2026-09-03T07:11:53.018Z" },
+    { url = "https://files.pythonhosted.org/packages/7d/c0/c251b2e926efed12bde899e46cc7578f8d97874160b57af5df4bf3406070/ethos_u_vela-5.2.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:d205cd08040cc7df4cbfe056d4689b5ea5d43db98c40e29c949c700c0e466062", size = 1871144, upload-time = "2026-09-03T07:11:56.501Z" },
+    { url = "https://files.pythonhosted.org/packages/dd/0f/878ceb3c0797e0d5db9ed4c1360c975639a8bc2ed3816fcf352f2df1ca8a/ethos_u_vela-5.2.0-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:777aad78787f30ca26ccf8f822502b5ff8976b6c0d89c24fbd7884957dba2a0f", size = 1925317, upload-time = "2026-09-03T07:12:03.263Z" },
+    { url = "https://files.pythonhosted.org/packages/f9/2c/019a46f1c1bddb1833d8b6c963ff81b42acf7d9a092e7dc203d1e67d03a7/ethos_u_vela-5.2.0-cp313-cp313-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:fa6d9d95829a06d3cb05f921c6f4324776760e1078d0b094b5dde06e1e63cafb", size = 2125680, upload-time = "2026-09-03T07:12:12.018Z" },
+    { url = "https://files.pythonhosted.org/packages/a0/48/463d6a4ec978a736efc42c9d2772a94f2fba61a922768850dc95dbb1bbc5/ethos_u_vela-5.2.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d0c8b0efbf839851ce78904c972161fe53704ee5acf42e372c5a5b1ab2881468", size = 2040986, upload-time = "2026-09-03T07:12:18.449Z" },
+    { url = "https://files.pythonhosted.org/packages/22/90/35ac8d0f5e4479267a196d9b3ecab18e7e51e746c94fd318a6eeafb35d92/ethos_u_vela-5.2.0-cp313-cp313-win32.whl", hash = "sha256:c5d3b8a3d5118f2a45461833893e73bab29e3eb592083cfd52bcdc22f19bb71e", size = 1541994, upload-time = "2026-09-03T07:12:22.854Z" },
+    { url = "https://files.pythonhosted.org/packages/22/e8/b942bd63a7e9f332a9f3da9715335a2d09d76c808388daae5a824f95bfcf/ethos_u_vela-5.2.0-cp313-cp313-win_amd64.whl", hash = "sha256:412b279dcd79e787e3b80920765e6ae32cb1c0c75f54bd07755df793a7ba63a4", size = 1713292, upload-time = "2026-09-03T07:12:27.507Z" },
 ]
 
 [[package]]
@@ -921,7 +921,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "ethos-u-vela", specifier = ">=4.5.0" },
+    { name = "ethos-u-vela", specifier = ">=5.2.0,<5.3" },
     { name = "numpy", specifier = ">=2.3.5" },
     { name = "tensorflow", specifier = ">=2.20.0" },
 ]

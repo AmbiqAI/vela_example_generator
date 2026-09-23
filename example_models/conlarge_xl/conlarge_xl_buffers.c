@@ -10,8 +10,8 @@
 #include "conlarge_xl_weights.h"
 #include "conlarge_xl_meta.h"
 
-__attribute__((aligned(32))) static uint8_t conlarge_xl_region_1[2160000] = {0};
-__attribute__((aligned(32))) static uint8_t conlarge_xl_region_2[554704] = {0};
+__attribute__((aligned(32))) static uint8_t conlarge_xl_region_1[2640000] = {0};
+__attribute__((aligned(32))) static uint8_t conlarge_xl_region_2[819904] = {0};
 
 uint8_t* get_region_base_ptr(int region) {
     switch(region) {

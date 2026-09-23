@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "ethos-u-vela>=4.5.0",
+    "ethos-u-vela>=5.2.0,<5.3",
     "numpy>=2.3.5",
     "tensorflow>=2.20.0",
 ]

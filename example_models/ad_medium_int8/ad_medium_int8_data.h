@@ -1,13 +1,13 @@
 /*
- * Generated C arrays from NPY files
+ * Generated C arrays for TFLite model: ad_medium_int8.tflite
  *
  * Input file: ifm0.npy
- * Input shape: [1, 32, 32, 1]
- * Input type: int8
+ * Input shape: [np.int32(1), np.int32(32), np.int32(32), np.int32(1)]
+ * Input type: <class 'numpy.int8'>
  *
  * Output file: ofm0.npy
- * Output shape: [1, 8]
- * Output type: int8
+ * Output shape: [np.int32(1), np.int32(8)]
+ * Output type: <class 'numpy.int8'>
  */
 
 #ifndef AD_MEDIUM_INT8_DATA_H

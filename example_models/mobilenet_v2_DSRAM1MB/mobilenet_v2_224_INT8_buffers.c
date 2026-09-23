@@ -11,7 +11,7 @@
 #include "mobilenet_v2_224_INT8_meta.h"
 
 __attribute__((aligned(32))) static uint8_t mobilenet_v2_224_INT8_region_1[702464] = {0};
-__attribute__((aligned(32))) static uint8_t mobilenet_v2_224_INT8_region_2[1036448] = {0};
+__attribute__((aligned(32))) static uint8_t mobilenet_v2_224_INT8_region_2[1025024] = {0};
 
 uint8_t* get_region_base_ptr(int region) {
     switch(region) {

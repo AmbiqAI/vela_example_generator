@@ -211,6 +211,34 @@ This repository also contains:
 
 Those directories are useful as reference integration points; the Python pipeline itself does not depend on building them.
 
+## Example Models (Vela 5.2.0)
+
+Every example under `example_models/` was regenerated with ethos-u-vela 5.2.0 (`--accelerator-config ethos-u85-256`,
+`config/ambiq_final.ini`, default optimisation) using the settings below. The Vela-dependent files (`*_vela.npz`,
+`*_cmd_data.h`, `*_weights.h`, `*_meta.h`, `*_buffers.{h,c}`, `*_run.c`, `*_summary_*.csv`, `src/*_cmd_data.txt`,
+`src/*_weights.txt`) are new; the source tflites, `ifm*/ofm*.npy` sidecars, `*_data.h` reference arrays and the
+input/golden text dumps are the same reference data as before.
+
+| model | system config | memory mode | reference IO |
+|---|---|---|---|
+| ad_medium_int8 | AmbiqLP_SRAM | Dedicated_Sram_256KB | sidecar ifm0/ofm0.npy |
+| conlarge_xl | AmbiqLP_PSRAM | Dedicated_Sram_1MB | sidecar ifm0/ofm0.npy |
+| efficientnet_lite0_s8_lg | AmbiqLP_PSRAM | Dedicated_Sram_1MB | sidecar ifm0/ofm0.npy |
+| kws_micronet_m | AmbiqLP_SRAM | Dedicated_Sram_256KB | sidecar ifm0/ofm0.npy |
+| mobilenet_v2_DSRAM1MB | AmbiqLP_SRAM | Dedicated_Sram_1MB | existing `_data.h` kept (source tflite restored from history) |
+| npu_wakeword (p1_lin_12k_s1_pool) | AmbiqLP_SRAM | Sram_Only | existing `_data.h` kept (see `kws_model_io_package/`) |
+| resnet_v1_8_32_tfs_int8 | AmbiqLP_SRAM | Dedicated_Sram_256KB | `example_models5.2/.../D_bare_metal/ifm0.npy` (from the example's input.txt) |
+| rnnoise_INT8 | AmbiqLP_SRAM | Shared_Sram_256KB | existing multi-input `_data.h` kept |
+| wave2letter (wav2letter_pruned_int8) | AmbiqLP_PSRAM | Dedicated_Sram_1MB | sidecar ifm0/ofm0.npy |
+
+Why some modes differ from the labels in the previous summary CSVs: the `[Memory_Mode.*]` definitions in
+`config/ambiq_final.ini` were remapped in July/August 2026. For ad_medium, efficientnet, kws, mobilenet, npu_wakeword and
+resnet the mode listed above is the one that reproduces the previous Vela 4.5.0 command stream byte for byte with the current
+ini, so each example keeps its original memory placement. rnnoise, wave2letter and conlarge_xl could not be reproduced
+byte-exactly by any ini/mode combination (their weights match, only the command stream differs), so they use the settings
+recorded in their previous summary CSVs. The Vela 4.5.0 artifacts remain in git history (last at commit a89d100).
+`example_models5.2/` additionally holds the kws/resnet compile-recipe variants used for the Atomiq110 FPGA measurements.
+
 ## Repository Layout
 
 ```text
