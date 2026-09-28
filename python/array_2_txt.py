@@ -94,6 +94,10 @@ def get_output_filename(array_name: str, prefix: Optional[str] = None) -> Option
         name = "input.txt"
     elif array_name.endswith("_output"):
         name = "golden_output.txt"
+    elif match := re.search(r"_input_(\d+)$", array_name):
+        name = f"input_{match.group(1)}.txt"
+    elif match := re.search(r"_output_(\d+)$", array_name):
+        name = f"golden_output_{match.group(1)}.txt"
     elif array_name.endswith("_weights"):
         name = "weights.txt"
     elif array_name.endswith("_cmd_data"):

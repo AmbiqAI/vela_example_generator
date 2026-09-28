@@ -14,15 +14,21 @@ from pathlib import Path
 import shutil
 
 
-def resolve_optional_path(base_dir, provided_path):
-    """Resolve an optional path relative to the repo root."""
-    if provided_path is None:
-        return None
+def resolve_optional_paths(base_dir, provided_paths):
+    """Resolve optional paths relative to the repo root."""
+    resolved = []
+    for provided_path in provided_paths or []:
+        path = Path(provided_path)
+        if not path.is_absolute():
+            path = base_dir / path
+        resolved.append(path)
+    return resolved
 
-    path = Path(provided_path)
-    if not path.is_absolute():
-        path = base_dir / path
-    return path
+
+def tensor_sidecar_sort_key(path):
+    """Sort ifmN/ofmN sidecars numerically and reject malformed names last."""
+    suffix = path.stem[3:]
+    return (0, int(suffix)) if suffix.isdigit() else (1, path.name)
 
 
 def resolve_vela_command(vela_cmd):
@@ -160,29 +166,33 @@ Examples:
     parser.add_argument(
         '--input-npy',
         type=str,
-        default=None,
-        help='Optional input tensor .npy file to feed into generate_c_arrays.py'
+        action='append',
+        default=[],
+        help='Optional input tensor .npy file; repeat in model input order'
     )
 
     parser.add_argument(
         '--output-npy',
         type=str,
-        default=None,
-        help='Optional output tensor .npy file to write from generate_c_arrays.py'
+        action='append',
+        default=[],
+        help='Optional output tensor .npy file to write; repeat in model output order'
     )
 
     parser.add_argument(
         '--source-output-npy',
         type=str,
-        default=None,
-        help='Optional output tensor .npy file to use as the golden output array'
+        action='append',
+        default=[],
+        help='Optional output tensor .npy file to use as golden data; repeat in output order'
     )
 
     parser.add_argument(
         '--expected-output-npy',
         type=str,
-        default=None,
-        help='Optional expected output tensor .npy file to verify against generate_c_arrays.py output'
+        action='append',
+        default=[],
+        help='Optional expected output tensor .npy file; repeat in model output order'
     )
 
     parser.add_argument(
@@ -277,38 +287,39 @@ Examples:
     print(f"Memory mode:   {args.memory_mode}")
     print(f"Vela config:   {args.vela_config}")
 
-    input_npy_path = resolve_optional_path(script_dir, args.input_npy)
-    output_npy_path = resolve_optional_path(script_dir, args.output_npy)
-    source_output_npy_path = resolve_optional_path(script_dir, args.source_output_npy)
-    expected_output_npy_path = resolve_optional_path(script_dir, args.expected_output_npy)
+    input_npy_paths = resolve_optional_paths(script_dir, args.input_npy)
+    output_npy_paths = resolve_optional_paths(script_dir, args.output_npy)
+    source_output_npy_paths = resolve_optional_paths(script_dir, args.source_output_npy)
+    expected_output_npy_paths = resolve_optional_paths(script_dir, args.expected_output_npy)
 
     if args.use_model_sidecar_npy:
-        if input_npy_path is None:
-            candidate_input_npy = tflite_path.parent / 'ifm0.npy'
-            if candidate_input_npy.exists():
-                input_npy_path = candidate_input_npy
-        if source_output_npy_path is None:
-            candidate_output_npy = tflite_path.parent / 'ofm0.npy'
-            if candidate_output_npy.exists():
-                source_output_npy_path = candidate_output_npy
+        if not input_npy_paths:
+            input_npy_paths = sorted(
+                tflite_path.parent.glob('ifm*.npy'), key=tensor_sidecar_sort_key
+            )
+        if not source_output_npy_paths:
+            source_output_npy_paths = sorted(
+                tflite_path.parent.glob('ofm*.npy'), key=tensor_sidecar_sort_key
+            )
 
-    for label, optional_path in (
-        ('input NPY', input_npy_path),
-        ('source output NPY', source_output_npy_path),
-        ('expected output NPY', expected_output_npy_path),
+    for label, optional_paths in (
+        ('input NPY', input_npy_paths),
+        ('source output NPY', source_output_npy_paths),
+        ('expected output NPY', expected_output_npy_paths),
     ):
-        if optional_path is not None and not optional_path.exists():
-            print(f"Error: {label} file not found: {optional_path}", file=sys.stderr)
-            sys.exit(1)
+        for optional_path in optional_paths:
+            if not optional_path.is_file():
+                print(f"Error: {label} file not found: {optional_path}", file=sys.stderr)
+                sys.exit(1)
 
-    if input_npy_path is not None:
-        print(f"Input NPY:     {input_npy_path}")
-    if source_output_npy_path is not None:
-        print(f"Golden OFM:    {source_output_npy_path}")
-    if expected_output_npy_path is not None:
-        print(f"Expected OFM:  {expected_output_npy_path}")
-    if output_npy_path is not None:
-        print(f"Output NPY:    {output_npy_path}")
+    if input_npy_paths:
+        print(f"Input NPYs:    {', '.join(str(path) for path in input_npy_paths)}")
+    if source_output_npy_paths:
+        print(f"Golden OFMs:   {', '.join(str(path) for path in source_output_npy_paths)}")
+    if expected_output_npy_paths:
+        print(f"Expected OFMs: {', '.join(str(path) for path in expected_output_npy_paths)}")
+    if output_npy_paths:
+        print(f"Output NPYs:   {', '.join(str(path) for path in output_npy_paths)}")
     
     # Determine prefix
     model_name = tflite_path.stem
@@ -440,13 +451,13 @@ Examples:
             '-o', str(c_arrays_output)
         ]
 
-        if input_npy_path is not None:
+        for input_npy_path in input_npy_paths:
             generate_cmd.extend(['--input-npy', str(input_npy_path)])
-        if output_npy_path is not None:
+        for output_npy_path in output_npy_paths:
             generate_cmd.extend(['--output-npy', str(output_npy_path)])
-        if source_output_npy_path is not None:
+        for source_output_npy_path in source_output_npy_paths:
             generate_cmd.extend(['--source-output-npy', str(source_output_npy_path)])
-        if expected_output_npy_path is not None:
+        for expected_output_npy_path in expected_output_npy_paths:
             generate_cmd.extend(['--expected-output-npy', str(expected_output_npy_path)])
         
         success = run_command(generate_cmd, f"Step 3: Running generate_c_arrays.py")
@@ -551,4 +562,3 @@ Examples:
 
 if __name__ == "__main__":
     main()
-

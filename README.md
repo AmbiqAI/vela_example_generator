@@ -34,7 +34,7 @@ Given a `.tflite` model, the pipeline can generate:
 ## Requirements
 
 - Python 3.11+
-- Arm Vela CLI available as `vela`
+- Arm Vela 5.2.0 CLI available as `vela`
 - TensorFlow and NumPy for reference array generation
 
 The repo already declares Python dependencies in [`pyproject.toml`](/Users/mohammed.abuhussein/workspace/vela_example_generator/pyproject.toml). A typical setup is:

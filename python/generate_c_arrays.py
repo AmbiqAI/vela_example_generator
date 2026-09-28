@@ -107,101 +107,149 @@ def get_c_type_for_dtype(dtype):
         return "int8_t"
     elif dtype == np.int16:
         return "int16_t"
-    else:
-        return "uint8_t"  # Default fallback
+    raise ValueError(f"Unsupported tensor dtype for C generation: {dtype}")
+
+
+def validate_path_count(label, paths, tensor_details):
+    """Require an optional path list to cover every corresponding tensor."""
+    if paths and len(paths) != len(tensor_details):
+        raise ValueError(
+            f"{label} count mismatch: expected {len(tensor_details)}, got {len(paths)}"
+        )
 
 
 def run_tflite_inference(
     tflite_path,
     output_path=None,
-    input_npy_path=None,
-    output_npy_path=None,
-    source_output_npy_path=None,
-    expected_output_npy_path=None,
+    input_npy_paths=None,
+    output_npy_paths=None,
+    source_output_npy_paths=None,
+    expected_output_npy_paths=None,
 ):
     """Run inference on TFLite model and generate C arrays."""
+
+    input_npy_paths = list(input_npy_paths or [])
+    output_npy_paths = list(output_npy_paths or [])
+    source_output_npy_paths = list(source_output_npy_paths or [])
+    expected_output_npy_paths = list(expected_output_npy_paths or [])
 
     # Load TFLite model
     interpreter = tf.lite.Interpreter(model_path=str(tflite_path))
     interpreter.allocate_tensors()
 
     # Get input and output details
-    input_details = interpreter.get_input_details()[0]
-    output_details = interpreter.get_output_details()[0]
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+
+    if not input_details:
+        raise ValueError("Model has no input tensors")
+    if not output_details:
+        raise ValueError("Model has no output tensors")
+
+    validate_path_count("Input NPY", input_npy_paths, input_details)
+    validate_path_count("Output NPY", output_npy_paths, output_details)
+    validate_path_count("Source output NPY", source_output_npy_paths, output_details)
+    validate_path_count("Expected output NPY", expected_output_npy_paths, output_details)
 
     print(f"\n{'='*60}")
     print(f"Model: {tflite_path.name}")
     print(f"{'='*60}")
-    print(f"\nInput Details:")
-    print(f"  Shape: {input_details['shape']}")
-    print(f"  Type: {input_details['dtype']}")
-    print(f"  Quantization: {input_details['quantization']}")
 
-    print(f"\nOutput Details:")
-    print(f"  Shape: {output_details['shape']}")
-    print(f"  Type: {output_details['dtype']}")
-    print(f"  Quantization: {output_details['quantization']}")
+    input_data = []
+    for index, details in enumerate(input_details):
+        print(f"\nInput {index} Details:")
+        print(f"  Shape: {details['shape']}")
+        print(f"  Type: {details['dtype']}")
+        print(f"  Quantization: {details['quantization']}")
 
-    if input_npy_path is not None:
-        input_data = load_input_npy(input_npy_path, input_details)
-        print(f"\nLoaded input from NPY: {input_npy_path}")
-    else:
-        input_data = generate_random_input(input_details)
-        print(f"\nGenerated random input with shape: {input_data.shape}")
+        if input_npy_paths:
+            data = load_input_npy(input_npy_paths[index], details)
+            print(f"  Loaded from NPY: {input_npy_paths[index]}")
+        else:
+            data = generate_random_input(details)
+            print(f"  Generated random input with shape: {data.shape}")
+        input_data.append(data)
+
+    for index, details in enumerate(output_details):
+        print(f"\nOutput {index} Details:")
+        print(f"  Shape: {details['shape']}")
+        print(f"  Type: {details['dtype']}")
+        print(f"  Quantization: {details['quantization']}")
 
     # Run inference
-    interpreter.set_tensor(input_details['index'], input_data)
+    for details, data in zip(input_details, input_data):
+        interpreter.set_tensor(details['index'], data)
     interpreter.invoke()
 
-    # Get output
-    output_data = interpreter.get_tensor(output_details['index'])
-    print(f"Output shape: {output_data.shape}")
+    output_data = [interpreter.get_tensor(details['index']) for details in output_details]
 
-    if expected_output_npy_path is not None:
-        expected_output_data = load_output_npy(expected_output_npy_path, output_details)
-        output_matches = np.array_equal(output_data, expected_output_data)
-        print(f"Expected output match: {output_matches}")
-        if not output_matches:
-            raise ValueError(
-                f"Model output does not match expected output NPY: {expected_output_npy_path}"
-            )
-        print(f"Verified output against NPY: {expected_output_npy_path}")
+    if expected_output_npy_paths:
+        for index, (path, details, data) in enumerate(
+            zip(expected_output_npy_paths, output_details, output_data)
+        ):
+            expected = load_output_npy(path, details)
+            if not np.array_equal(data, expected):
+                raise ValueError(
+                    f"Model output {index} does not match expected output NPY: {path}"
+                )
+            print(f"Verified output {index} against NPY: {path}")
 
-    if source_output_npy_path is not None:
-        output_data = load_output_npy(source_output_npy_path, output_details)
-        print(f"Loaded output from NPY: {source_output_npy_path}")
+    if source_output_npy_paths:
+        output_data = [
+            load_output_npy(path, details)
+            for path, details in zip(source_output_npy_paths, output_details)
+        ]
+        for index, path in enumerate(source_output_npy_paths):
+            print(f"Loaded output {index} from NPY: {path}")
 
-    if output_npy_path is not None:
-        np.save(output_npy_path, output_data, allow_pickle=False)
-        print(f"Saved output tensor to NPY: {output_npy_path}")
-
-    # Determine C types
-    input_c_type = get_c_type_for_dtype(input_details['dtype'])
-    output_c_type = get_c_type_for_dtype(output_details['dtype'])
+    if output_npy_paths:
+        for index, (path, data) in enumerate(zip(output_npy_paths, output_data)):
+            path.parent.mkdir(parents=True, exist_ok=True)
+            np.save(path, data, allow_pickle=False)
+            print(f"Saved output tensor {index} to NPY: {path}")
 
     # Generate C file content
     model_name = tflite_path.stem.replace('-', '_').replace('.', '_')
 
-    input_source = input_npy_path.name if input_npy_path is not None else "generated-random"
-    if source_output_npy_path is not None:
-        output_source = source_output_npy_path.name
-    elif expected_output_npy_path is not None:
-        output_source = expected_output_npy_path.name
-    elif output_npy_path is not None:
-        output_source = output_npy_path.name
+    input_sections = []
+    input_metadata = []
+    for index, (details, data) in enumerate(zip(input_details, input_data)):
+        suffix = "" if len(input_details) == 1 else f"_{index}"
+        array_name = f"{model_name}_input{suffix}"
+        input_sections.append(
+            f"/* Input tensor {index} data */\n"
+            + array_to_c_format(data, array_name, get_c_type_for_dtype(details['dtype']))
+        )
+        input_metadata.append(
+            f"#define {model_name.upper()}_INPUT{suffix.upper()}_SIZE {data.size}"
+        )
+
+    output_sections = []
+    output_metadata = []
+    for index, (details, data) in enumerate(zip(output_details, output_data)):
+        suffix = "" if len(output_details) == 1 else f"_{index}"
+        array_name = f"{model_name}_output{suffix}"
+        output_sections.append(
+            f"/* Output tensor {index} data */\n"
+            + array_to_c_format(data, array_name, get_c_type_for_dtype(details['dtype']))
+        )
+        output_metadata.append(
+            f"#define {model_name.upper()}_OUTPUT{suffix.upper()}_SIZE {data.size}"
+        )
+
+    input_sources = [path.name for path in input_npy_paths] or ["generated-random"]
+    if source_output_npy_paths:
+        output_sources = [path.name for path in source_output_npy_paths]
+    elif expected_output_npy_paths:
+        output_sources = [path.name for path in expected_output_npy_paths]
     else:
-        output_source = "inference-output"
+        output_sources = ["inference-output"]
 
     c_content = f"""/*
  * Generated C arrays for TFLite model: {tflite_path.name}
  *
- * Input file: {input_source}
- * Input shape: {list(input_details['shape'])}
- * Input type: {input_details['dtype']}
- *
- * Output file: {output_source}
- * Output shape: {list(output_details['shape'])}
- * Output type: {output_details['dtype']}
+ * Input files: {', '.join(input_sources)}
+ * Output files: {', '.join(output_sources)}
  */
 
 #ifndef {model_name.upper()}_DATA_H
@@ -209,15 +257,13 @@ def run_tflite_inference(
 
 #include <stdint.h>
 
-/* Input tensor data */
-{array_to_c_format(input_data, f"{model_name}_input", input_c_type)}
+{chr(10).join(input_sections)}
 
-/* Output tensor data */
-{array_to_c_format(output_data, f"{model_name}_output", output_c_type)}
+{chr(10).join(output_sections)}
 
 /* Metadata */
-#define {model_name.upper()}_INPUT_SIZE {input_data.size}
-#define {model_name.upper()}_OUTPUT_SIZE {output_data.size}
+{chr(10).join(input_metadata)}
+{chr(10).join(output_metadata)}
 
 #endif /* {model_name.upper()}_DATA_H */
 """
@@ -226,13 +272,16 @@ def run_tflite_inference(
     if output_path is None:
         output_path = tflite_path.parent / f"{model_name}_data.h"
 
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
     # Write to file
     with open(output_path, 'w') as f:
         f.write(c_content)
 
     print(f"\n✓ Generated C header file: {output_path}")
-    print(f"  Input array: {model_name}_input[{input_data.size}]")
-    print(f"  Output array: {model_name}_output[{output_data.size}]")
+    print(f"  Input arrays: {len(input_data)}")
+    print(f"  Output arrays: {len(output_data)}")
 
     return output_path
 
@@ -255,26 +304,30 @@ def main():
     parser.add_argument(
         '--input-npy',
         type=str,
-        default=None,
-        help='Optional input tensor .npy file. Must match the model input shape and dtype.'
+        action='append',
+        default=[],
+        help='Optional input tensor .npy file. Repeat in model input order.'
     )
     parser.add_argument(
         '--output-npy',
         type=str,
-        default=None,
-        help='Optional output tensor .npy file to write after inference.'
+        action='append',
+        default=[],
+        help='Optional output tensor .npy file to write. Repeat in model output order.'
     )
     parser.add_argument(
         '--source-output-npy',
         type=str,
-        default=None,
-        help='Optional output tensor .npy file to use as the golden output array.'
+        action='append',
+        default=[],
+        help='Optional output tensor .npy file to use as golden data. Repeat in output order.'
     )
     parser.add_argument(
         '--expected-output-npy',
         type=str,
-        default=None,
-        help='Optional expected output tensor .npy file. Must match the model output shape and dtype.'
+        action='append',
+        default=[],
+        help='Optional expected output tensor .npy file. Repeat in model output order.'
     )
 
     args = parser.parse_args()
@@ -285,35 +338,29 @@ def main():
         print(f"Error: TFLite file not found: {tflite_path}", file=sys.stderr)
         sys.exit(1)
 
-    input_npy_path = Path(args.input_npy) if args.input_npy is not None else None
-    output_npy_path = Path(args.output_npy) if args.output_npy is not None else None
-    source_output_npy_path = (
-        Path(args.source_output_npy) if args.source_output_npy is not None else None
-    )
-    expected_output_npy_path = (
-        Path(args.expected_output_npy) if args.expected_output_npy is not None else None
-    )
+    input_npy_paths = [Path(path) for path in args.input_npy]
+    output_npy_paths = [Path(path) for path in args.output_npy]
+    source_output_npy_paths = [Path(path) for path in args.source_output_npy]
+    expected_output_npy_paths = [Path(path) for path in args.expected_output_npy]
 
-    if input_npy_path is not None and not input_npy_path.exists():
-        print(f"Error: input NPY file not found: {input_npy_path}", file=sys.stderr)
-        sys.exit(1)
-
-    if source_output_npy_path is not None and not source_output_npy_path.exists():
-        print(f"Error: source output NPY file not found: {source_output_npy_path}", file=sys.stderr)
-        sys.exit(1)
-
-    if expected_output_npy_path is not None and not expected_output_npy_path.exists():
-        print(f"Error: expected output NPY file not found: {expected_output_npy_path}", file=sys.stderr)
-        sys.exit(1)
+    for label, paths in (
+        ("input NPY", input_npy_paths),
+        ("source output NPY", source_output_npy_paths),
+        ("expected output NPY", expected_output_npy_paths),
+    ):
+        for path in paths:
+            if not path.is_file():
+                print(f"Error: {label} file not found: {path}", file=sys.stderr)
+                sys.exit(1)
 
     try:
         run_tflite_inference(
             tflite_path,
             args.output,
-            input_npy_path,
-            output_npy_path,
-            source_output_npy_path,
-            expected_output_npy_path,
+            input_npy_paths,
+            output_npy_paths,
+            source_output_npy_paths,
+            expected_output_npy_paths,
         )
     except Exception as e:
         print(f"\nError processing model: {e}", file=sys.stderr)
