@@ -10,8 +10,8 @@
 #include "ad_medium_int8_weights.h"
 #include "ad_medium_int8_meta.h"
 
-__attribute__((aligned(32))) static uint8_t ad_medium_int8_region_1[197632] = {0};
-__attribute__((aligned(32))) static uint8_t ad_medium_int8_region_2[239968] = {0};
+__attribute__((aligned(32))) static uint8_t ad_medium_int8_region_1[1024] = {0};
+__attribute__((aligned(32))) static uint8_t ad_medium_int8_region_2[245760] = {0};
 
 uint8_t* get_region_base_ptr(int region) {
     switch(region) {

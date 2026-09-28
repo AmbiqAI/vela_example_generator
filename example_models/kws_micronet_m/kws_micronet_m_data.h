@@ -1,13 +1,13 @@
 /*
- * Generated C arrays from NPY files
+ * Generated C arrays for TFLite model: kws_micronet_m.tflite
  *
  * Input file: ifm0.npy
- * Input shape: [1, 49, 10, 1]
- * Input type: int8
+ * Input shape: [np.int32(1), np.int32(49), np.int32(10), np.int32(1)]
+ * Input type: <class 'numpy.int8'>
  *
  * Output file: ofm0.npy
- * Output shape: [1, 12]
- * Output type: int8
+ * Output shape: [np.int32(1), np.int32(12)]
+ * Output type: <class 'numpy.int8'>
  */
 
 #ifndef KWS_MICRONET_M_DATA_H

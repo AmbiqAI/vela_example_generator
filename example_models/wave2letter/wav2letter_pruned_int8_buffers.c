@@ -10,8 +10,8 @@
 #include "wav2letter_pruned_int8_weights.h"
 #include "wav2letter_pruned_int8_meta.h"
 
-__attribute__((aligned(32))) static uint8_t wav2letter_pruned_int8_region_1[592000] = {0};
-__attribute__((aligned(32))) static uint8_t wav2letter_pruned_int8_region_2[1023872] = {0};
+__attribute__((aligned(32))) static uint8_t wav2letter_pruned_int8_region_1[296000] = {0};
+__attribute__((aligned(32))) static uint8_t wav2letter_pruned_int8_region_2[979840] = {0};
 
 uint8_t* get_region_base_ptr(int region) {
     switch(region) {

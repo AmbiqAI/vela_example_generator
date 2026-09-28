@@ -10,7 +10,7 @@
 #include "rnnoise_INT8_weights.h"
 #include "rnnoise_INT8_meta.h"
 
-__attribute__((aligned(32))) static uint8_t rnnoise_INT8_region_1[288] = {0};
+__attribute__((aligned(32))) static uint8_t rnnoise_INT8_region_1[384] = {0};
 __attribute__((aligned(32))) static uint8_t rnnoise_INT8_region_2[704] = {0};
 
 uint8_t* get_region_base_ptr(int region) {
