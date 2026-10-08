@@ -1,13 +1,8 @@
 /*
  * Generated C arrays for TFLite model: kws_micronet_m.tflite
  *
- * Input file: ifm0.npy
- * Input shape: [np.int32(1), np.int32(49), np.int32(10), np.int32(1)]
- * Input type: <class 'numpy.int8'>
- *
- * Output file: ofm0.npy
- * Output shape: [np.int32(1), np.int32(12)]
- * Output type: <class 'numpy.int8'>
+ * Input files: ifm0.npy
+ * Output files: ofm0.npy
  */
 
 #ifndef KWS_MICRONET_M_DATA_H
@@ -15,7 +10,7 @@
 
 #include <stdint.h>
 
-/* Input tensor data */
+/* Input tensor 0 data */
 const int8_t kws_micronet_m_input[490] = {
     -108, 19, -31, 19, -81, 83, 61, 75, 64, -15, -63, 67,
     -46, -113, -109, 29, 62, 8, -28, -118, -117, 13, -29, 112,
@@ -60,7 +55,7 @@ const int8_t kws_micronet_m_input[490] = {
     102, -8, 2, -40, -60, -45, -125, 76, -94, -95
 };
 
-/* Output tensor data */
+/* Output tensor 0 data */
 const int8_t kws_micronet_m_output[12] = {
     -52, -9, -54, -47, -82, -73, -42, -75, -38, -64, -110, -2
 };

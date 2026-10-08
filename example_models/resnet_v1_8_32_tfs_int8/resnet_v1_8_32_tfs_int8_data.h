@@ -1,13 +1,8 @@
 /*
  * Generated C arrays for TFLite model: resnet_v1_8_32_tfs_int8.tflite
  *
- * Input file: ifm0.npy
- * Input shape: [np.int32(1), np.int32(32), np.int32(32), np.int32(3)]
- * Input type: <class 'numpy.uint8'>
- *
- * Output file: inference-output
- * Output shape: [np.int32(1), np.int32(10)]
- * Output type: <class 'numpy.int8'>
+ * Input files: ifm0.npy
+ * Output files: ofm0.npy
  */
 
 #ifndef RESNET_V1_8_32_TFS_INT8_DATA_H
@@ -15,7 +10,7 @@
 
 #include <stdint.h>
 
-/* Input tensor data */
+/* Input tensor 0 data */
 const uint8_t resnet_v1_8_32_tfs_int8_input[3072] = {
     117, 171, 93, 53, 132, 216, 179, 179, 44, 115, 79, 123,
     192, 123, 2, 187, 100, 97, 168, 107, 102, 213, 49, 163,
@@ -275,7 +270,7 @@ const uint8_t resnet_v1_8_32_tfs_int8_input[3072] = {
     244, 213, 140, 232, 224, 1, 97, 26, 155, 11, 104, 179
 };
 
-/* Output tensor data */
+/* Output tensor 0 data */
 const int8_t resnet_v1_8_32_tfs_int8_output[10] = {
     -71, -118, -105, -97, -97, -118, -97, -115, -97, -111
 };

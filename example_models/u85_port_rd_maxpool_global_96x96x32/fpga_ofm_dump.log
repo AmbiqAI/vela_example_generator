@@ -1,0 +1,78 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OFM_DUMP_START model=u85_port_rd_maxpool_global_96x96x32 inputs=1 outputs=1 cmd=288
+I: Initializing NPU: base_address=0x400e0000, fast_memory=0x00000000, fast_memory_size=zu, secure=0, privileged=0
+I: Soft reset NPU
+I: New NPU driver registered (handle: 0x20000e50, NPU: 0x400e0000)
+D: ethosu_invoke_async(): OPTIMIZER_CONFIG
+I: Optimizer release nbr: 0 patch: 1
+I: Optimizer config. product=2, cmd_stream_version=1, macs_per_cc=8, num_axi_ext=1, num_axi_sram=2, custom_dma=0
+I: Optimizer config. arch version=2.0.0
+I: Ethos-U config. product=2, cmd_stream_version=1, macs_per_cc=8, num_axi_ext=1, num_axi_sram=2, custom_dma=0
+I: Ethos-U. arch version=2.0.0
+D: ethosu_invoke_async(): NOP
+D: ethosu_invoke_async(): NOP
+D: ethosu_invoke_async(): NOP
+D: ethosu_invoke_async(): COMMAND_STREAM
+I: handle_command_stream: cmd_stream=0x2200b750, cms_length 64
+I: Soft reset NPU
+D: ethosu_dev_set_clock_and_power(): CMD=0x00000000
+D: ethosu_dev_run_command_stream(): QBASE=0x000000002200b750, QSIZE=256, cmd_stream_ptr=0x2200b750
+D: ethosu_dev_run_command_stream(): BASEP0=0x000000002200b720
+D: ethosu_dev_run_command_stream(): BASEP1=0x0000000021000040
+D: ethosu_dev_run_command_stream(): BASEP2=0x0000000000000000
+D: ethosu_dev_run_command_stream(): BASEP3=0x0000000000000000
+D: ethosu_dev_run_command_stream(): BASEP4=0x0000000000000000
+D: ethosu_dev_run_command_stream(): BASEP5=0x0000000000000000
+D: ethosu_dev_run_command_stream(): BASEP6=0x0000000000000000
+D: ethosu_dev_run_command_stream(): BASEP7=0x0000000000000000
+D: ethosu_dev_run_command_stream(): CMD=0x00000001
+D: ethosu_dev_set_clock_and_power(): CMD=0x0000000c
+D: ethosu_wait(): Inference finished successfully...
+RUN 0 status=0 cpu_cycles=698741
+OFM 0 1 0 32 ba1c4cee
+7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f
+D: ethosu_invoke_async(): OPTIMIZER_CONFIG
+I: Optimizer release nbr: 0 patch: 1
+I: Optimizer config. product=2, cmd_stream_version=1, macs_per_cc=8, num_axi_ext=1, num_axi_sram=2, custom_dma=0
+I: Optimizer config. arch version=2.0.0
+I: Ethos-U config. product=2, cmd_stream_version=1, macs_per_cc=8, num_axi_ext=1, num_axi_sram=2, custom_dma=0
+I: Ethos-U. arch version=2.0.0
+D: ethosu_invoke_async(): NOP
+D: ethosu_invoke_async(): NOP
+D: ethosu_invoke_async(): NOP
+D: ethosu_invoke_async(): COMMAND_STREAM
+I: handle_command_stream: cmd_stream=0x2200b750, cms_length 64
+I: Soft reset NPU
+D: ethosu_dev_set_clock_and_power(): CMD=0x00000000
+D: ethosu_dev_run_command_stream(): QBASE=0x000000002200b750, QSIZE=256, cmd_stream_ptr=0x2200b750
+D: ethosu_dev_run_command_stream(): BASEP0=0x000000002200b720
+D: ethosu_dev_run_command_stream(): BASEP1=0x0000000021000040
+D: ethosu_dev_run_command_stream(): BASEP2=0x0000000000000000
+D: ethosu_dev_run_command_stream(): BASEP3=0x0000000000000000
+D: ethosu_dev_run_command_stream(): BASEP4=0x0000000000000000
+D: ethosu_dev_run_command_stream(): BASEP5=0x0000000000000000
+D: ethosu_dev_run_command_stream(): BASEP6=0x0000000000000000
+D: ethosu_dev_run_command_stream(): BASEP7=0x0000000000000000
+D: ethosu_dev_run_command_stream(): CMD=0x00000001
+D: ethosu_dev_set_clock_and_power(): CMD=0x0000000c
+D: ethosu_wait(): Inference finished successfully...
+RUN 1 status=0 cpu_cycles=698199
+OFM_DONE pass=1
+I: NPU driver handle 0x20000e50 deregistered.

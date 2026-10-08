@@ -244,6 +244,32 @@ Dedicated_Sram_256KB so that the four small models share one recipe (constants a
 The Vela 4.5.0 artifacts remain in git history (last at commit a89d100).
 `example_models5.2/` additionally holds the kws/resnet compile-recipe variants used for the Atomiq110 FPGA measurements.
 
+### RTL subset with FPGA-measured sidecars (added 2026-10-08)
+
+The models below were added for the RTL correlation of the AT110 NPU estimator (helia-estimator #67/#69, #68, #71): the
+reference models, the single-direction and mixed memory tests, one INT16 model and one MLPerf Tiny vision model. All use the
+small-model recipe (`AmbiqHP_SRAM`, `Dedicated_Sram_256KB`, `config/ambiq_final.ini`, Vela 5.2.0). Their `ifm*.npy` are fixed
+random inputs (seed 2026; INT16 inputs within 10 % of full scale) and their `ofm*.npy` are the **Ethos-U85 outputs captured on the
+Atomiq110 FPGA**, not the TFLite interpreter: `python/fpga_ofm_dump.py` builds the `npu_ofm_dump` AmbiqSuite example around the
+package, runs the command stream through the core driver (NPU HP clock, 128 B SRAM bursts, arenas in shared SRAM), dumps every
+output over SWO and rewrites `*_data.h` / `src/*_golden_output.txt` from the hardware values (`--pipeline`). The interpreter result
+differs from the hardware by at most ±1 LSB on a few elements, as expected; `fpga_ofm_dump.log` in each package is the raw capture.
+
+| model | role in the RTL set | inputs / outputs | reference IO |
+|---|---|---|---|
+| kws_micronet_m | anchor (existing package, sidecars refreshed from the FPGA) | 1 / 1 | FPGA ofm0.npy |
+| resnet_v1_8_32_tfs_int8 | anchor (existing package, sidecars refreshed from the FPGA) | 1 / 1 | FPGA ofm0.npy |
+| rnnoise_INT8 | FC/weight-bound voice model, the read-side residual of #68 | 4 / 5 | FPGA ofm0..4.npy |
+| u85_port_wr_conv1x1_1to64_96x96 | write-only stream (write-limit fit, 4 outstanding writes) | 1 / 1 | FPGA ofm0.npy |
+| u85_port_rd_maxpool_global_96x96x32 | read-only stream (open residual #68) | 1 / 1 | FPGA ofm0.npy |
+| u85_mem_fm_add_96x96x32 | mixed read+write, 128 vs 256 B port saturation | 2 / 1 | FPGA ofm0.npy |
+| u85_mem_ladder_conv1x1_64_64x64_r4 | feature-map-bound mixed conv, worst 256 B case | 1 / 1 | FPGA ofm0.npy |
+| deepvqe_opt_exact | A16W8 SE+AEC model, 243 small ops (per-op floor); static-shape variant | 24 / 24 | FPGA ofm0..23.npy |
+| mlperf_tiny_vww | MLPerf Tiny visual wake words (helia-model-zoo a8w8) | 1 / 1 | FPGA ofm0.npy |
+
+Not included: microWakeWord v2 (okay_nabu): its streaming graph carries a second subgraph (the CALL_ONCE state initialiser), and
+Vela's raw writer only accepts single-graph models, so it has no single NPU command stream.
+
 ## Repository Layout
 
 ```text
