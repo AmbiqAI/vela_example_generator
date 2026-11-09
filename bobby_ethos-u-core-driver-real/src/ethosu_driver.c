@@ -22,6 +22,7 @@
 #include "ethosu_driver.h"
 #include "ethosu_device.h"
 #include "ethosu_log.h"
+#include "pmu_ethosu.h"
 
 #if defined(ETHOSU55)
 #include "ethosu_config_u55.h"
@@ -95,7 +96,7 @@ int ethosu_semaphore_take(void *sem, uint64_t timeout)
     (void)timeout;  // keep signature; implement if you need timeouts
     struct ethosu_semaphore_t *s = (struct ethosu_semaphore_t *)sem;
     while (s->count == 0) {
-        LOG_INFO("NPU driver handle aaa count %d\n", s->count);
+        //LOG_INFO("NPU driver handle aaa count %d\n", s->count);
         __WFE();
     }
     s->count--;
